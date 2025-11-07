@@ -218,3 +218,17 @@ model Newsletter {
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
 }
+
+model Guard {
+  id            String   @id @default(uuid())
+  name          String
+  position      String
+  email         String   @unique
+  phone         String
+  status        String   @default("active") // active, inactive, on-duty
+  hireDate      DateTime
+  licenseNumber String?
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

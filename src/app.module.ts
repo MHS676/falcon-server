@@ -4,7 +4,6 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ContactModule } from './contact/contact.module';
-import { SkillsModule } from './skills/skills.module';
 import { ExperienceModule } from './experience/experience.module';
 import { BlogModule } from './blog/blog.module';
 import { SettingsModule } from './settings/settings.module';
@@ -12,6 +11,10 @@ import { BannerModule } from './banner/banner.module';
 import { SocialModule } from './social/social.module';
 import { CareerModule } from './career/career.module';
 import { UploadModule } from './upload/upload.module';
+import { GuardsModule } from './guards/guards.module';
+import { ServicesModule } from './services/services.module';
+import { ClientsModule } from './clients/clients.module';
+import { GalleryModule } from './gallery/gallery.module';
 
 @Module({
   imports: [
@@ -22,12 +25,15 @@ import { UploadModule } from './upload/upload.module';
     AuthModule,
     ProjectsModule,
     ContactModule,
-    SkillsModule,
     ExperienceModule,
     BlogModule,
     SettingsModule,
     BannerModule,
     SocialModule,
+    GuardsModule,
+    ServicesModule,
+    ClientsModule,
+    GalleryModule,
     CareerModule,
     UploadModule,
   ],

@@ -4,7 +4,6 @@ import {
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
-  UseGuards,
   BadRequestException,
   Delete,
   Param,
@@ -13,13 +12,11 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post('image')
   @UseInterceptors(FileInterceptor('file'))
   async uploadImage(
@@ -54,7 +51,6 @@ export class UploadController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('images')
   @UseInterceptors(FilesInterceptor('files', 10))
   async uploadMultipleImages(
@@ -94,7 +90,6 @@ export class UploadController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('document')
   @UseInterceptors(FileInterceptor('file'))
   async uploadDocument(
@@ -133,7 +128,6 @@ export class UploadController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':publicId')
   async deleteFile(@Param('publicId') publicId: string) {
     const success = await this.uploadService.deleteImage(publicId);

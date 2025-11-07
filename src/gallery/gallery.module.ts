@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { BannerService } from './banner.service';
-import { BannerController } from './banner.controller';
+import { GalleryService } from './gallery.service';
+import { GalleryController } from './gallery.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 import { UploadModule } from '../upload/upload.module';
 
 @Module({
   imports: [PrismaModule, UploadModule],
-  controllers: [BannerController],
-  providers: [BannerService],
+  controllers: [GalleryController],
+  providers: [GalleryService],
 })
-export class BannerModule {}
+export class GalleryModule {}
