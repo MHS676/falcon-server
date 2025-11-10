@@ -7,7 +7,10 @@ async function bootstrap() {
   
   // Enable CORS for frontend
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: [
+      'http://localhost:5173', // Local development
+      'https://falcon-frontend-six.vercel.app' // Production
+    ],
     credentials: true,
   });
 
