@@ -48,26 +48,6 @@ model Contact {
   user      User?    @relation(fields: [userId], references: [id])
 }
 
-model Skill {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  category  String
-  level     Int      @default(0)
-  icon      String?
-  createdAt DateTime @default(now())
-}
-
-model Experience {
-  id          String    @id @default(uuid())
-  company     String
-  position    String
-  description String
-  startDate   DateTime
-  endDate     DateTime?
-  current     Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-}
-
 model Blog {
   id         String   @id @default(uuid())
   title      String
@@ -219,16 +199,66 @@ model Newsletter {
   createdAt DateTime @default(now())
 }
 
-model Guard {
-  id            String   @id @default(uuid())
-  name          String
-  position      String
-  email         String   @unique
-  phone         String
-  status        String   @default("active") // active, inactive, on-duty
-  hireDate      DateTime
-  licenseNumber String?
-  image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+model FAQ {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  category  String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Job {
+  id            String           @id @default(uuid())
+  title         String
+  description   String
+  shortDesc     String?
+  company       String?
+  location      String?
+  jobType       String           @default("full-time") // full-time, part-time, contract, freelance
+  experienceLevel String         @default("mid-level") // entry-level, mid-level, senior-level
+  salary        String?
+  requirements  String[]
+  benefits      String[]
+  skills        String[]
+  remote        Boolean          @default(false)
+  urgent        Boolean          @default(false)
+  active        Boolean          @default(true)
+  applicationDeadline DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  applications  JobApplication[]
+}
+
+model JobApplication {
+  id          String   @id @default(uuid())
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  
+  // Applicant Details
+  fullName    String
+  email       String
+  phone       String?
+  portfolio   String?
+  linkedIn    String?
+  github      String?
+  
+  // Application Details
+  coverLetter String?
+  experience  String?
+  salary      String?
+  availability String?
+  
+  // Files
+  resume      String   // CV/Resume file path
+  portfolio_files String[] // Additional portfolio files
+  
+  // Status
+  status      String   @default("pending") // pending, reviewed, shortlisted, interviewed, rejected, hired
+  notes       String?  // Admin notes
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
