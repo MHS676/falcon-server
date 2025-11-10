@@ -211,54 +211,54 @@ model FAQ {
 }
 
 model Job {
-  id            String           @id @default(uuid())
-  title         String
-  description   String
-  shortDesc     String?
-  company       String?
-  location      String?
-  jobType       String           @default("full-time") // full-time, part-time, contract, freelance
-  experienceLevel String         @default("mid-level") // entry-level, mid-level, senior-level
-  salary        String?
-  requirements  String[]
-  benefits      String[]
-  skills        String[]
-  remote        Boolean          @default(false)
-  urgent        Boolean          @default(false)
-  active        Boolean          @default(true)
+  id                  String           @id @default(uuid())
+  title               String
+  description         String
+  shortDesc           String?
+  company             String?
+  location            String?
+  jobType             String           @default("full-time") // full-time, part-time, contract, freelance
+  experienceLevel     String           @default("mid-level") // entry-level, mid-level, senior-level
+  salary              String?
+  requirements        String[]
+  benefits            String[]
+  skills              String[]
+  remote              Boolean          @default(false)
+  urgent              Boolean          @default(false)
+  active              Boolean          @default(true)
   applicationDeadline DateTime?
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
-  applications  JobApplication[]
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  applications        JobApplication[]
 }
 
 model JobApplication {
-  id          String   @id @default(uuid())
-  jobId       String
-  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  
+  id    String @id @default(uuid())
+  jobId String
+  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
   // Applicant Details
-  fullName    String
-  email       String
-  phone       String?
-  portfolio   String?
-  linkedIn    String?
-  github      String?
-  
+  fullName  String
+  email     String
+  phone     String?
+  portfolio String?
+  linkedIn  String?
+  github    String?
+
   // Application Details
-  coverLetter String?
-  experience  String?
-  salary      String?
+  coverLetter  String?
+  experience   String?
+  salary       String?
   availability String?
-  
+
   // Files
-  resume      String   // CV/Resume file path
+  resume          String // CV/Resume file path
   portfolio_files String[] // Additional portfolio files
-  
+
   // Status
-  status      String   @default("pending") // pending, reviewed, shortlisted, interviewed, rejected, hired
-  notes       String?  // Admin notes
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status String  @default("pending") // pending, reviewed, shortlisted, interviewed, rejected, hired
+  notes  String? // Admin notes
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
