@@ -9,12 +9,14 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173', // Local development
-      'https://falcon-frontend-six.vercel.app' // Production
+      'https://falcon-frontend-six.vercel.app', // Production
+      'https://falcon-frontend-88b8yuylc-hasan-talukders-projects.vercel.app', // Vercel deployment
+      /^https:\/\/falcon-frontend.*\.vercel\.app$/ // All Vercel deployment URLs
     ],
     credentials: true,
   });
 
-  
+
   // Enable validation globally
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
