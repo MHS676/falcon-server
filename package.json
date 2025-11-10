@@ -2,7 +2,7 @@
   "name": "portfolio-backend",
   "version": "1.0.0",
   "description": "NestJS Backend with Prisma and PostgreSQL",
-  "author": "Hasan Talukder",
+  "author": "Falcon Security Limited",
   "private": true,
   "license": "MIT",
   "scripts": {

@@ -8,7 +8,7 @@ async function updateAdminPassword() {
     const hashedPassword = await bcrypt.hash('admin123', 10);
     
     const updated = await prisma.admin.updateMany({
-      where: { email: 'admin@secureguard.com' },
+      where: { email: 'admin@Falcon Security Limited.com' },
       data: { password: hashedPassword }
     });
     

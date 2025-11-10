@@ -56,6 +56,7 @@ export class CareerService {
         id: true,
         title: true,
         description: true,
+        requirements: true,
         location: true,
         type: true,
         salary: true,
