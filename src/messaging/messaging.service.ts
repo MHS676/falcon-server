@@ -37,6 +37,17 @@ export class MessagingService {
   }
 
   async sendGuestMessage(sendMessageDto: SendMessageDto) {
+    // Check if session exists before creating
+    let isNewSession = false;
+    if (!sendMessageDto.sessionToken) {
+      isNewSession = true;
+    } else {
+      const existingSession = await this.prisma.chatSession.findUnique({
+        where: { sessionToken: sendMessageDto.sessionToken }
+      });
+      isNewSession = !existingSession;
+    }
+
     const session = await this.createOrGetSession(
       sendMessageDto.sessionToken,
       sendMessageDto.guestName,
@@ -55,7 +66,7 @@ export class MessagingService {
     return {
       message,
       sessionToken: session.sessionToken,
-      isFirstMessage: !session.guestName && sendMessageDto.guestName // Check if this sets the name for first time
+      isFirstMessage: isNewSession || (!session.guestName && sendMessageDto.guestName)
     };
   }
 

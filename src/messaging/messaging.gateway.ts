@@ -70,11 +70,19 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
       });
       
       // Notify admins about new message
+      console.log(`Broadcasting new guest message to admin_room for session ${result.message.sessionId}`);
       this.server.to('admin_room').emit('new_guest_message', {
         ...result.message,
         sessionToken: result.sessionToken,
         sessionId: result.message.sessionId
       });
+
+      // If it's a new session, also send updated sessions list to admins
+      if (result.isFirstMessage) {
+        console.log('New session detected, sending updated sessions list to admins');
+        const updatedSessions = await this.messagingService.getAllActiveSessions();
+        this.server.to('admin_room').emit('active_sessions', updatedSessions);
+      }
 
       // Send welcome message if it's the first message with a name
       if (result.isFirstMessage && data.guestName) {
@@ -160,10 +168,12 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
   async handleAdminJoin(
     @ConnectedSocket() client: Socket,
   ) {
+    console.log(`Admin joined: ${client.id}`);
     client.join('admin_room');
     
     // Get all active sessions for admin
     const sessions = await this.messagingService.getAllActiveSessions();
+    console.log(`Sending ${sessions.length} active sessions to admin`);
     client.emit('active_sessions', sessions);
     
     return { success: true };

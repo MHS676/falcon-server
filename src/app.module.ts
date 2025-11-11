@@ -15,6 +15,7 @@ import { ClientsModule } from './clients/clients.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { JobsModule } from './jobs/jobs.module';
 import { MessagingModule } from './messaging/messaging.module';
+import { SitemapModule } from './sitemap/sitemap.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { MessagingModule } from './messaging/messaging.module';
     UploadModule,
     JobsModule,
     MessagingModule,
+    SitemapModule,
   ],
 })
 export class AppModule {}
