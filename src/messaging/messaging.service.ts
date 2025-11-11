@@ -54,8 +54,22 @@ export class MessagingService {
 
     return {
       message,
-      sessionToken: session.sessionToken
+      sessionToken: session.sessionToken,
+      isFirstMessage: !session.guestName && sendMessageDto.guestName // Check if this sets the name for first time
     };
+  }
+
+  async sendWelcomeMessage(sessionId: string, guestName: string) {
+    const welcomeMessage = await this.prisma.message.create({
+      data: {
+        sessionId: sessionId,
+        content: `Hi ${guestName}! 👋 Welcome to Falcon Security. I'm here to help you with any questions about our cybersecurity services. How can I assist you today?`,
+        senderType: 'admin',
+        senderName: 'Falcon Security Team'
+      }
+    });
+
+    return welcomeMessage;
   }
 
   async sendAdminReply(adminReplyDto: AdminReplyDto) {

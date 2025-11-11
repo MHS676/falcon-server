@@ -75,6 +75,28 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
         sessionToken: result.sessionToken,
         sessionId: result.message.sessionId
       });
+
+      // Send welcome message if it's the first message with a name
+      if (result.isFirstMessage && data.guestName) {
+        setTimeout(async () => {
+          const welcomeMessage = await this.messagingService.sendWelcomeMessage(
+            result.message.sessionId,
+            data.guestName
+          );
+
+          // Emit welcome message
+          this.server.to(`session_${result.sessionToken}`).emit('new_message', {
+            ...welcomeMessage,
+            sessionToken: result.sessionToken
+          });
+          
+          this.server.to('admin_room').emit('new_guest_message', {
+            ...welcomeMessage,
+            sessionToken: result.sessionToken,
+            sessionId: welcomeMessage.sessionId
+          });
+        }, 1500); // 1.5 second delay for natural feel
+      }
       
       return {
         success: true,
