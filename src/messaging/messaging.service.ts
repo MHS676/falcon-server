@@ -24,13 +24,13 @@ export class MessagingService {
       }
     }
 
-    // Create new session
+    // Create new session with anonymous user by default
     const newSessionToken = sessionToken || uuidv4();
     return await this.prisma.chatSession.create({
       data: {
         sessionToken: newSessionToken,
-        guestName,
-        guestEmail,
+        guestName: guestName || 'Anonymous User',
+        guestEmail: guestEmail || null,
         lastActivity: new Date()
       }
     });
@@ -48,7 +48,7 @@ export class MessagingService {
         sessionId: session.id,
         content: sendMessageDto.content,
         senderType: 'guest',
-        senderName: sendMessageDto.guestName || 'Guest'
+        senderName: session.guestName || 'Anonymous User'
       }
     });
 
