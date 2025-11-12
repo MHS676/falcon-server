@@ -31,8 +31,8 @@ export class BannerController {
   ) {
     let imageUrl = createBannerDto.image;
 
-    // If file is uploaded, use the upload service
-    if (file) {
+    // If file is uploaded, try to use the upload service
+    if (file && !imageUrl) {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
       if (!allowedTypes.includes(file.mimetype)) {
@@ -43,8 +43,15 @@ export class BannerController {
       if (file.size > 5 * 1024 * 1024) {
         throw new BadRequestException('File size must be less than 5MB');
       }
-      // Upload and get URL
-      imageUrl = await this.uploadService.uploadImage(file, 'banner');
+      
+      // Try to upload; if it fails, throw a helpful error
+      try {
+        imageUrl = await this.uploadService.uploadImage(file, 'banner');
+      } catch (error) {
+        throw new BadRequestException(
+          'Failed to upload image. Please provide a direct image URL instead or check the IMAGE_UPLOAD_SERVICE_URL configuration.'
+        );
+      }
     }
 
     // Normalize types defensively (covers production deploys without implicit conversion)
@@ -91,8 +98,8 @@ export class BannerController {
   ) {
     let imageUrl = updateBannerDto.image;
 
-    // If file is uploaded, use the upload service
-    if (file) {
+    // If file is uploaded, try to use the upload service
+    if (file && !imageUrl) {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
       if (!allowedTypes.includes(file.mimetype)) {
@@ -104,7 +111,13 @@ export class BannerController {
         throw new BadRequestException('File size must be less than 5MB');
       }
 
-      imageUrl = await this.uploadService.uploadImage(file, 'banner');
+      try {
+        imageUrl = await this.uploadService.uploadImage(file, 'banner');
+      } catch (error) {
+        throw new BadRequestException(
+          'Failed to upload image. Please provide a direct image URL instead or check the IMAGE_UPLOAD_SERVICE_URL configuration.'
+        );
+      }
     }
 
     const normalized = {
