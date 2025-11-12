@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import axios from 'axios';
-import FormData from 'form-data';
+import * as FormData from 'form-data';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 
