@@ -3,12 +3,22 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import * as fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
   // Serve static files from uploads directory
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+  // In production (Railway), use /data/uploads. In development, use local uploads
+  const isProd = process.env.NODE_ENV === 'production';
+  const uploadsPath = isProd ? '/data/uploads' : join(process.cwd(), 'uploads');
+  
+  // Ensure directory exists
+  if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+  }
+  
+  app.useStaticAssets(uploadsPath, {
     prefix: '/uploads/',
   });
   
