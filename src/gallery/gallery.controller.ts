@@ -45,11 +45,7 @@ export class GalleryController {
         throw new BadRequestException('File size must be less than 5MB');
       }
 
-      imageUrl = await this.uploadService.uploadImageFromBuffer(
-        file.buffer,
-        file.originalname,
-        'gallery',
-      );
+      imageUrl = await this.uploadService.uploadImage(file, 'gallery');
     }
 
     // Ensure image is provided either via file upload or URL
@@ -103,11 +99,7 @@ export class GalleryController {
         throw new BadRequestException('File size must be less than 5MB');
       }
 
-      const imageUrl = await this.uploadService.uploadImageFromBuffer(
-        file.buffer,
-        file.originalname,
-        'gallery',
-      );
+      const imageUrl = await this.uploadService.uploadImage(file, 'gallery');
 
       updateData.image = imageUrl;
     }
