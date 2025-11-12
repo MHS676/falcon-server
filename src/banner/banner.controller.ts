@@ -29,10 +29,15 @@ export class BannerController {
     @Body() createBannerDto: CreateBannerDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
+    console.log('📥 Banner create request received');
+    console.log('File:', file ? { name: file.originalname, size: file.size, mimetype: file.mimetype } : 'NO FILE');
+    console.log('DTO:', createBannerDto);
+    
     let imageUrl = createBannerDto.image;
 
     // If file is uploaded, use the upload service
     if (file) {
+      console.log('✅ File detected, processing upload...');
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
       if (!allowedTypes.includes(file.mimetype)) {
@@ -45,7 +50,11 @@ export class BannerController {
       }
       
       // Upload (will try external first, fallback to local)
+      console.log('📤 Uploading file to storage...');
       imageUrl = await this.uploadService.uploadImage(file, 'banner');
+      console.log('✅ Upload complete, URL:', imageUrl);
+    } else {
+      console.log('⚠️  No file in request, using image URL from DTO');
     }
 
     // Normalize types defensively (covers production deploys without implicit conversion)
