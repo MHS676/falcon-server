@@ -31,8 +31,8 @@ export class BannerController {
   ) {
     let imageUrl = createBannerDto.image;
 
-    // If file is uploaded, try to use the upload service
-    if (file && !imageUrl) {
+    // If file is uploaded, use the upload service
+    if (file) {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
       if (!allowedTypes.includes(file.mimetype)) {
@@ -44,14 +44,8 @@ export class BannerController {
         throw new BadRequestException('File size must be less than 5MB');
       }
       
-      // Try to upload; if it fails, throw a helpful error
-      try {
-        imageUrl = await this.uploadService.uploadImage(file, 'banner');
-      } catch (error) {
-        throw new BadRequestException(
-          'Failed to upload image. Please provide a direct image URL instead or check the IMAGE_UPLOAD_SERVICE_URL configuration.'
-        );
-      }
+      // Upload (will try external first, fallback to local)
+      imageUrl = await this.uploadService.uploadImage(file, 'banner');
     }
 
     // Normalize types defensively (covers production deploys without implicit conversion)
@@ -98,8 +92,8 @@ export class BannerController {
   ) {
     let imageUrl = updateBannerDto.image;
 
-    // If file is uploaded, try to use the upload service
-    if (file && !imageUrl) {
+    // If file is uploaded, use the upload service
+    if (file) {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
       if (!allowedTypes.includes(file.mimetype)) {
@@ -111,13 +105,8 @@ export class BannerController {
         throw new BadRequestException('File size must be less than 5MB');
       }
 
-      try {
-        imageUrl = await this.uploadService.uploadImage(file, 'banner');
-      } catch (error) {
-        throw new BadRequestException(
-          'Failed to upload image. Please provide a direct image URL instead or check the IMAGE_UPLOAD_SERVICE_URL configuration.'
-        );
-      }
+      // Upload (will try external first, fallback to local)
+      imageUrl = await this.uploadService.uploadImage(file, 'banner');
     }
 
     const normalized = {
