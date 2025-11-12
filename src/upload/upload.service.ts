@@ -4,16 +4,22 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UploadService {
+  private readonly isConfigured: boolean;
+
   constructor(private configService: ConfigService) {
-    cloudinary.config({
-      cloud_name: this.configService.get('CLOUDINARY_CLOUD_NAME'),
-      api_key: this.configService.get('CLOUDINARY_API_KEY'),
-      api_secret: this.configService.get('CLOUDINARY_API_SECRET'),
-    });
+    const cloud_name = this.configService.get<string>('CLOUDINARY_CLOUD_NAME');
+    const api_key = this.configService.get<string>('CLOUDINARY_API_KEY');
+    const api_secret = this.configService.get<string>('CLOUDINARY_API_SECRET');
+
+    cloudinary.config({ cloud_name, api_key, api_secret });
+    this.isConfigured = !!(cloud_name && api_key && api_secret);
   }
 
   async uploadImage(file: Express.Multer.File, folder = 'portfolio'): Promise<string> {
     try {
+      if (!this.isConfigured) {
+        throw new BadRequestException('Image upload is not configured on the server');
+      }
       const result = await cloudinary.uploader.upload(file.path, {
         folder,
         resource_type: 'auto',
@@ -23,6 +29,7 @@ export class UploadService {
       
       return result.secure_url;
     } catch (error) {
+      if (error instanceof BadRequestException) throw error;
       throw new BadRequestException('Failed to upload image');
     }
   }
@@ -33,6 +40,9 @@ export class UploadService {
     folder = 'portfolio',
   ): Promise<string> {
     return new Promise((resolve, reject) => {
+      if (!this.isConfigured) {
+        return reject(new BadRequestException('Image upload is not configured on the server'));
+      }
       cloudinary.uploader
         .upload_stream(
           {
