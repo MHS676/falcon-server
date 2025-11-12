@@ -85,6 +85,37 @@ export class UploadService {
       throw new BadRequestException('Failed to upload images');
     }
   }
+    // Generate a best-effort optimized URL. External service may ignore options.
+    getOptimizedUrl(
+      publicIdOrUrl: string,
+      options: {
+        width?: number;
+        height?: number;
+        crop?: string;
+        quality?: string;
+        format?: string;
+      } = {},
+    ): string {
+      // If already a full URL, return as-is (external service may already serve optimized assets)
+      if (/^https?:\/\//i.test(publicIdOrUrl)) {
+        return publicIdOrUrl;
+      }
+      // If we have a base URL, construct a direct URL
+      const base = (this.baseUrl || '').replace(/\/$/, '');
+      if (base) {
+        // Append simple query params if provided (best effort)
+        const url = `${base}/${publicIdOrUrl}`;
+        const params = new URLSearchParams();
+        if (options.width) params.set('w', String(options.width));
+        if (options.height) params.set('h', String(options.height));
+        if (options.quality) params.set('q', options.quality);
+        if (options.format) params.set('fm', options.format);
+        const query = params.toString();
+        return query ? `${url}?${query}` : url;
+      }
+      // Fallback: return the identifier unchanged
+      return publicIdOrUrl;
+    }
 
   // With external service we don't transform URLs here
 }
