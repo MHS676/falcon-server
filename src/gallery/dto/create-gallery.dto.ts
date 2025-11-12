@@ -20,14 +20,33 @@ export class CreateGalleryDto {
   @IsArray()
   @IsString({ each: true })
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      try {
-        return JSON.parse(value);
-      } catch {
-        return value.split(',').map((tag: string) => tag.trim());
-      }
+    if (!value) return [];
+    
+    // If already an array, return as is
+    if (Array.isArray(value)) {
+      return value;
     }
-    return value;
+    
+    // If it's a string, try to parse as JSON first
+    if (typeof value === 'string') {
+      // Try JSON parsing first
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch (e) {
+        // JSON parsing failed, try comma-split
+      }
+      
+      // Fallback to comma-split
+      return value
+        .split(',')
+        .map((tag: string) => tag.trim())
+        .filter((tag: string) => tag.length > 0);
+    }
+    
+    return [];
   })
   tags?: string[];
 

@@ -15,14 +15,29 @@ export class CreateProjectDto {
   @IsArray()
   @IsString({ each: true })
   @Transform(({ value }) => {
+    if (!value) return [];
+    
+    if (Array.isArray(value)) {
+      return value;
+    }
+    
     if (typeof value === 'string') {
       try {
-        return JSON.parse(value);
-      } catch {
-        return value.split(',').map((tech: string) => tech.trim());
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch (e) {
+        // JSON parsing failed, try comma-split
       }
+      
+      return value
+        .split(',')
+        .map((tech: string) => tech.trim())
+        .filter((tech: string) => tech.length > 0);
     }
-    return value;
+    
+    return [];
   })
   technologies: string[];
 
