@@ -44,11 +44,7 @@ export class BannerController {
         throw new BadRequestException('File size must be less than 5MB');
       }
       // Upload and get URL
-      imageUrl = await this.uploadService.uploadImageFromBuffer(
-        file.buffer,
-        file.originalname,
-        'banner',
-      );
+      imageUrl = await this.uploadService.uploadImage(file, 'banner');
     }
 
     // Normalize types defensively (covers production deploys without implicit conversion)
@@ -108,11 +104,7 @@ export class BannerController {
         throw new BadRequestException('File size must be less than 5MB');
       }
 
-      imageUrl = await this.uploadService.uploadImageFromBuffer(
-        file.buffer,
-        file.originalname,
-        'banner',
-      );
+      imageUrl = await this.uploadService.uploadImage(file, 'banner');
     }
 
     const normalized = {

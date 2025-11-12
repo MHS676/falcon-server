@@ -38,9 +38,8 @@ export class UploadController {
       throw new BadRequestException('File size must be less than 5MB');
     }
 
-    const imageUrl = await this.uploadService.uploadImageFromBuffer(
-      file.buffer,
-      file.originalname,
+    const imageUrl = await this.uploadService.uploadImage(
+      file,
       folder || 'portfolio',
     );
 
@@ -74,9 +73,8 @@ export class UploadController {
     }
 
     const uploadPromises = files.map((file) =>
-      this.uploadService.uploadImageFromBuffer(
-        file.buffer,
-        file.originalname,
+      this.uploadService.uploadImage(
+        file,
         folder || 'portfolio',
       ),
     );
@@ -115,9 +113,8 @@ export class UploadController {
       throw new BadRequestException('File size must be less than 10MB');
     }
 
-    const documentUrl = await this.uploadService.uploadImageFromBuffer(
-      file.buffer,
-      file.originalname,
+    const documentUrl = await this.uploadService.uploadImage(
+      file,
       folder || 'documents',
     );
 

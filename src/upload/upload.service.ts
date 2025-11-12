@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import axios from 'axios';
 import FormData from 'form-data';
+import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -16,26 +17,15 @@ export class UploadService {
       if (!this.baseUrl) {
         throw new BadRequestException('Image upload service URL is not configured');
       }
-
-      const url = this.baseUrl.replace(/\/$/, '') + '/upload';
-      const form = new FormData();
-      form.append('file', file.buffer, {
-        filename: file.originalname,
-        contentType: file.mimetype,
-      });
-      form.append('folder', folder);
-
-      const res = await axios.post(url, form, {
-        headers: form.getHeaders(),
-        maxBodyLength: Infinity,
-      });
-      const data = res.data || {};
-      const imageUrl = data.url || data.secure_url || data.location || data.imageUrl || data.result?.url;
-      if (!imageUrl) throw new BadRequestException('Image upload failed: no URL returned');
-      return imageUrl;
+      const buffer = file.buffer ?? (file.path ? fs.readFileSync(file.path) : undefined);
+      if (!buffer) {
+        throw new BadRequestException('Uploaded file buffer is empty');
+      }
+      return await this.uploadImageFromBuffer(buffer, file.originalname, folder, file.mimetype);
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
-      throw new BadRequestException('Failed to upload image');
+      const message = (error as any)?.response?.data || (error as Error)?.message || 'Failed to upload image';
+      throw new BadRequestException(typeof message === 'string' ? message : 'Failed to upload image');
     }
   }
 
@@ -43,29 +33,56 @@ export class UploadService {
     buffer: Buffer,
     filename: string,
     folder = 'portfolio',
+    mimeType?: string,
   ): Promise<string> {
     try {
       if (!this.baseUrl) {
         throw new BadRequestException('Image upload service URL is not configured');
       }
-      const url = this.baseUrl.replace(/\/$/, '') + '/upload';
-      const form = new FormData();
-      form.append('file', buffer, {
-        filename,
-      });
-      form.append('folder', folder);
+      const base = this.baseUrl.replace(/\/$/, '');
+      const endpoints = ['/upload', '/api/upload', '/images/upload', '/images', '/file/upload', ''];
+      const fieldNames = ['file', 'image', 'upload', 'photo'];
 
-      const res = await axios.post(url, form, {
-        headers: form.getHeaders(),
-        maxBodyLength: Infinity,
-      });
-      const data = res.data || {};
-      const imageUrl = data.url || data.secure_url || data.location || data.imageUrl || data.result?.url;
-      if (!imageUrl) throw new BadRequestException('Image upload failed: no URL returned');
-      return imageUrl;
+      let lastErr: any = null;
+      for (const ep of endpoints) {
+        const url = base + ep;
+        for (const field of fieldNames) {
+          try {
+            const form = new FormData();
+            form.append(field, buffer, {
+              filename,
+              contentType: mimeType,
+            } as any);
+            if (folder) form.append('folder', folder);
+
+            const res = await axios.post(url, form, {
+              headers: form.getHeaders(),
+              maxBodyLength: Infinity,
+              validateStatus: () => true,
+            });
+            if (res.status >= 200 && res.status < 300) {
+              const data = res.data || {};
+              const imageUrl =
+                data.url || data.secure_url || data.location || data.imageUrl || data.result?.url || res.headers?.location;
+              if (typeof imageUrl === 'string' && /^https?:\/\//i.test(imageUrl)) {
+                return imageUrl;
+              }
+            } else {
+              lastErr = res.data || res.statusText;
+            }
+          } catch (e: any) {
+            lastErr = e?.response?.data || e?.message || e;
+            // try next combination
+          }
+        }
+      }
+      throw new BadRequestException(
+        `Failed to upload image via external service${lastErr ? `: ${typeof lastErr === 'string' ? lastErr : JSON.stringify(lastErr).slice(0,300)}` : ''}`,
+      );
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
-      throw new BadRequestException('Failed to upload image');
+      const message = (error as any)?.response?.data || (error as Error)?.message || 'Failed to upload image';
+      throw new BadRequestException(typeof message === 'string' ? message : 'Failed to upload image');
     }
   }
 
