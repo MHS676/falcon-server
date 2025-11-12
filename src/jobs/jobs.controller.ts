@@ -28,20 +28,8 @@ export class JobsController {
   // Job endpoints
   @Post()
   async createJob(@Body() createJobDto: CreateJobDto) {
-    // Parse string arrays if they come as strings
-    const processedDto = { ...createJobDto };
-    
-    if (typeof processedDto.requirements === 'string') {
-      processedDto.requirements = processedDto.requirements.split(',').map(s => s.trim()).filter(s => s);
-    }
-    if (typeof processedDto.benefits === 'string') {
-      processedDto.benefits = processedDto.benefits.split(',').map(s => s.trim()).filter(s => s);
-    }
-    if (typeof processedDto.skills === 'string') {
-      processedDto.skills = processedDto.skills.split(',').map(s => s.trim()).filter(s => s);
-    }
-
-    return this.jobsService.createJob(processedDto as CreateJobDto);
+    // DTO @Transform decorators handle array parsing automatically
+    return this.jobsService.createJob(createJobDto);
   }
 
   @Get()
@@ -66,20 +54,8 @@ export class JobsController {
 
   @Patch(':id')
   async updateJob(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    // Parse string arrays if they come as strings
-    const processedDto = { ...updateJobDto };
-    
-    if (typeof processedDto.requirements === 'string') {
-      processedDto.requirements = processedDto.requirements.split(',').map(s => s.trim()).filter(s => s);
-    }
-    if (typeof processedDto.benefits === 'string') {
-      processedDto.benefits = processedDto.benefits.split(',').map(s => s.trim()).filter(s => s);
-    }
-    if (typeof processedDto.skills === 'string') {
-      processedDto.skills = processedDto.skills.split(',').map(s => s.trim()).filter(s => s);
-    }
-
-    return this.jobsService.updateJob(id, processedDto as UpdateJobDto);
+    // DTO @Transform decorators handle array parsing automatically
+    return this.jobsService.updateJob(id, updateJobDto);
   }
 
   @Delete(':id')
