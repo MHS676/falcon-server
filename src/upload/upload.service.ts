@@ -48,13 +48,28 @@ export class UploadService {
     const filename = `${timestamp}-${randomStr}${ext}`;
     const filepath = path.join(folderPath, filename);
 
-    // Write file
-    const buffer = file.buffer ?? (file.path ? fs.readFileSync(file.path) : null);
-    if (!buffer) {
+    // Write file - handle both buffer and stream cases
+    let buffer: Buffer;
+    if (file.buffer) {
+      buffer = file.buffer;
+    } else if (file.path) {
+      buffer = fs.readFileSync(file.path);
+    } else {
       throw new BadRequestException('File buffer is empty');
     }
     
-    fs.writeFileSync(filepath, buffer);
+    // Ensure we have data
+    if (!buffer || buffer.length === 0) {
+      throw new BadRequestException('File has no data');
+    }
+    
+    try {
+      fs.writeFileSync(filepath, buffer);
+      console.log(`✅ File saved: ${filepath}`);
+    } catch (err) {
+      console.error(`❌ Failed to save file: ${filepath}`, err);
+      throw new BadRequestException(`Failed to write file: ${(err as Error)?.message}`);
+    }
 
     // Return URL path (accessible via static serve)
     return `${this.appUrl}/uploads/${folder}/${filename}`;
