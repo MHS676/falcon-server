@@ -20,6 +20,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     transform: true,
+    // Important for multipart/form-data: converts '"1"' -> 1, '"true"' -> true based on DTO types
+    transformOptions: { enableImplicitConversion: true },
   }));
 
   // API prefix

@@ -43,7 +43,7 @@ export class BannerController {
       if (file.size > 5 * 1024 * 1024) {
         throw new BadRequestException('File size must be less than 5MB');
       }
-
+      // Upload and get URL
       imageUrl = await this.uploadService.uploadImageFromBuffer(
         file.buffer,
         file.originalname,
@@ -51,10 +51,24 @@ export class BannerController {
       );
     }
 
-    return this.bannerService.create({
-      ...createBannerDto,
-      image: imageUrl,
-    });
+    // Normalize types defensively (covers production deploys without implicit conversion)
+    const normalized = {
+      title: createBannerDto.title,
+      subtitle: createBannerDto.subtitle || undefined,
+      image: imageUrl || undefined,
+      buttonText: createBannerDto.buttonText || undefined,
+      buttonUrl: createBannerDto.buttonUrl || undefined,
+      order: typeof createBannerDto.order === 'number'
+        ? createBannerDto.order
+        : Number(createBannerDto.order) || 0,
+      active: typeof createBannerDto.active === 'boolean'
+        ? createBannerDto.active
+        : ((typeof (createBannerDto.active as any) === 'string')
+            ? ['true', '1', 'yes', 'on'].includes((createBannerDto.active as any).toLowerCase())
+            : (createBannerDto.active as any) === 1),
+    };
+
+    return this.bannerService.create(normalized as any);
   }
 
   @Get()
@@ -79,7 +93,7 @@ export class BannerController {
     @Body() updateBannerDto: UpdateBannerDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    let updateData = { ...updateBannerDto };
+    let imageUrl = updateBannerDto.image;
 
     // If file is uploaded, use the upload service
     if (file) {
@@ -94,16 +108,34 @@ export class BannerController {
         throw new BadRequestException('File size must be less than 5MB');
       }
 
-      const imageUrl = await this.uploadService.uploadImageFromBuffer(
+      imageUrl = await this.uploadService.uploadImageFromBuffer(
         file.buffer,
         file.originalname,
         'banner',
       );
-
-      updateData.image = imageUrl;
     }
 
-    return this.bannerService.update(id, updateData);
+    const normalized = {
+      title: updateBannerDto.title || undefined,
+      subtitle: updateBannerDto.subtitle || undefined,
+      image: imageUrl || undefined,
+      buttonText: updateBannerDto.buttonText || undefined,
+      buttonUrl: updateBannerDto.buttonUrl || undefined,
+      order: updateBannerDto.order !== undefined
+        ? (typeof updateBannerDto.order === 'number'
+            ? updateBannerDto.order
+            : Number(updateBannerDto.order) || 0)
+        : undefined,
+      active: updateBannerDto.active !== undefined
+        ? (typeof updateBannerDto.active === 'boolean'
+            ? updateBannerDto.active
+            : ((typeof (updateBannerDto.active as any) === 'string'
+                ? ['true', '1', 'yes', 'on'].includes((updateBannerDto.active as any).toLowerCase())
+                : (updateBannerDto.active as any) === 1)))
+        : undefined,
+    };
+
+    return this.bannerService.update(id, normalized as any);
   }
 
   @Delete(':id')
