@@ -147,14 +147,7 @@ export class UploadController {
       throw new BadRequestException('Public ID is required');
     }
 
-    const options = {
-      width: width ? parseInt(width) : undefined,
-      height: height ? parseInt(height) : undefined,
-      quality,
-      format,
-    };
-
-    const optimizedUrl = this.uploadService.getOptimizedUrl(publicId, options);
+    const optimizedUrl = this.uploadService.getOptimizedUrl(publicId);
 
     return {
       success: true,
