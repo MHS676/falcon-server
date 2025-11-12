@@ -9,8 +9,11 @@ export class UploadService {
   private readonly appUrl: string;
 
   constructor(private configService: ConfigService) {
-    // Use local uploads directory
-    this.uploadsDir = path.join(process.cwd(), 'uploads');
+    // Use persistent storage directory for production, local for development
+    // Railway provides /data as persistent storage volume
+    const isProd = this.configService.get<string>('NODE_ENV') === 'production';
+    const baseDir = isProd ? '/data' : process.cwd();
+    this.uploadsDir = path.join(baseDir, 'uploads');
     this.appUrl = this.configService.get<string>('APP_URL') || 'http://localhost:3001';
     
     // Ensure uploads directory exists
