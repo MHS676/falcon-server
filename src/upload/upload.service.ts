@@ -1,33 +1,38 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { v2 as cloudinary } from 'cloudinary';
+import axios from 'axios';
+import FormData from 'form-data';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UploadService {
-  private readonly isConfigured: boolean;
+  private readonly baseUrl?: string;
 
   constructor(private configService: ConfigService) {
-    const cloud_name = this.configService.get<string>('CLOUDINARY_CLOUD_NAME');
-    const api_key = this.configService.get<string>('CLOUDINARY_API_KEY');
-    const api_secret = this.configService.get<string>('CLOUDINARY_API_SECRET');
-
-    cloudinary.config({ cloud_name, api_key, api_secret });
-    this.isConfigured = !!(cloud_name && api_key && api_secret);
+    this.baseUrl = this.configService.get<string>('IMAGE_UPLOAD_SERVICE_URL');
   }
 
   async uploadImage(file: Express.Multer.File, folder = 'portfolio'): Promise<string> {
     try {
-      if (!this.isConfigured) {
-        throw new BadRequestException('Image upload is not configured on the server');
+      if (!this.baseUrl) {
+        throw new BadRequestException('Image upload service URL is not configured');
       }
-      const result = await cloudinary.uploader.upload(file.path, {
-        folder,
-        resource_type: 'auto',
-        quality: 'auto',
-        fetch_format: 'auto',
+
+      const url = this.baseUrl.replace(/\/$/, '') + '/upload';
+      const form = new FormData();
+      form.append('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
       });
-      
-      return result.secure_url;
+      form.append('folder', folder);
+
+      const res = await axios.post(url, form, {
+        headers: form.getHeaders(),
+        maxBodyLength: Infinity,
+      });
+      const data = res.data || {};
+      const imageUrl = data.url || data.secure_url || data.location || data.imageUrl || data.result?.url;
+      if (!imageUrl) throw new BadRequestException('Image upload failed: no URL returned');
+      return imageUrl;
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
       throw new BadRequestException('Failed to upload image');
@@ -39,38 +44,34 @@ export class UploadService {
     filename: string,
     folder = 'portfolio',
   ): Promise<string> {
-    return new Promise((resolve, reject) => {
-      if (!this.isConfigured) {
-        return reject(new BadRequestException('Image upload is not configured on the server'));
+    try {
+      if (!this.baseUrl) {
+        throw new BadRequestException('Image upload service URL is not configured');
       }
-      cloudinary.uploader
-        .upload_stream(
-          {
-            folder,
-            public_id: filename,
-            resource_type: 'auto',
-            quality: 'auto',
-            fetch_format: 'auto',
-          },
-          (error, result) => {
-            if (error) {
-              reject(new BadRequestException('Failed to upload image'));
-            } else {
-              resolve(result.secure_url);
-            }
-          },
-        )
-        .end(buffer);
-    });
+      const url = this.baseUrl.replace(/\/$/, '') + '/upload';
+      const form = new FormData();
+      form.append('file', buffer, {
+        filename,
+      });
+      form.append('folder', folder);
+
+      const res = await axios.post(url, form, {
+        headers: form.getHeaders(),
+        maxBodyLength: Infinity,
+      });
+      const data = res.data || {};
+      const imageUrl = data.url || data.secure_url || data.location || data.imageUrl || data.result?.url;
+      if (!imageUrl) throw new BadRequestException('Image upload failed: no URL returned');
+      return imageUrl;
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      throw new BadRequestException('Failed to upload image');
+    }
   }
 
   async deleteImage(publicId: string): Promise<boolean> {
-    try {
-      const result = await cloudinary.uploader.destroy(publicId);
-      return result.result === 'ok';
-    } catch (error) {
-      throw new BadRequestException('Failed to delete image');
-    }
+    // Optional: if external service supports deletion; otherwise return false
+    return false;
   }
 
   async uploadMultiple(
@@ -85,30 +86,5 @@ export class UploadService {
     }
   }
 
-  // Extract public ID from Cloudinary URL
-  extractPublicId(url: string): string {
-    const parts = url.split('/');
-    const filename = parts[parts.length - 1];
-    return filename.split('.')[0];
-  }
-
-  // Generate optimized URL with transformations
-  getOptimizedUrl(
-    publicId: string,
-    options: {
-      width?: number;
-      height?: number;
-      crop?: string;
-      quality?: string;
-      format?: string;
-    } = {},
-  ): string {
-    return cloudinary.url(publicId, {
-      width: options.width,
-      height: options.height,
-      crop: options.crop || 'fill',
-      quality: options.quality || 'auto',
-      fetch_format: options.format || 'auto',
-    });
-  }
+  // With external service we don't transform URLs here
 }
