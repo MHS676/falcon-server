@@ -33,6 +33,8 @@ async function main() {
       name: 'Falcon Security Admin',
       email: 'admin@falconsecurity.com',
       password: hashedPassword,
+      role: 'superadmin',
+      isActive: true,
     },
   });
 
