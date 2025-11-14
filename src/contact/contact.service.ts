@@ -38,4 +38,13 @@ export class ContactService {
       where: { id },
     });
   }
+
+  async getUnreadCount() {
+    const count = await this.prisma.contact.count({
+      where: {
+        status: 'new'
+      }
+    });
+    return { count };
+  }
 }

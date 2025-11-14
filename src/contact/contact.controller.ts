@@ -16,6 +16,11 @@ export class ContactController {
     return this.contactService.findAll();
   }
 
+  @Get('unread/count')
+  getUnreadCount() {
+    return this.contactService.getUnreadCount();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.contactService.findOne(id);

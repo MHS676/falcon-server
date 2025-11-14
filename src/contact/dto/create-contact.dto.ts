@@ -7,6 +7,14 @@ export class CreateContactDto {
   @IsEmail()
   email: string;
 
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsOptional()
+  @IsString()
+  serviceType?: string;
+
   @IsString()
   message: string;
 
