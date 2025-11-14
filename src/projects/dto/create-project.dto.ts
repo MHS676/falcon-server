@@ -12,6 +12,10 @@ export class CreateProjectDto {
   @IsString()
   image?: string;
 
+  @IsOptional()
+  @IsString()
+  category?: string;
+
   @IsArray()
   @IsString({ each: true })
   @Transform(({ value }) => {

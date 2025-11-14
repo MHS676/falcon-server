@@ -155,4 +155,35 @@ export class MessagingService {
       where: { sessionToken }
     });
   }
+
+  async getUnreadMessagesCount() {
+    const result = await this.prisma.message.aggregate({
+      where: {
+        senderType: 'guest',
+        isRead: false
+      },
+      _count: {
+        id: true
+      }
+    });
+    
+    return result._count.id;
+  }
+
+  async getUnreadSessionsCount() {
+    const sessions = await this.prisma.chatSession.findMany({
+      where: { 
+        isActive: true,
+        messages: {
+          some: {
+            senderType: 'guest',
+            isRead: false
+          }
+        }
+      },
+      select: { id: true }
+    });
+    
+    return sessions.length;
+  }
 }

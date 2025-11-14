@@ -64,4 +64,18 @@ export class MessagingController {
   async closeSession(@Param('sessionId') sessionId: string) {
     return await this.messagingService.closeSession(sessionId);
   }
+
+  @Get('unread/count')
+  @UseGuards(JwtAuthGuard)
+  async getUnreadCount() {
+    const [messagesCount, sessionsCount] = await Promise.all([
+      this.messagingService.getUnreadMessagesCount(),
+      this.messagingService.getUnreadSessionsCount()
+    ]);
+    
+    return {
+      messages: messagesCount,
+      sessions: sessionsCount
+    };
+  }
 }

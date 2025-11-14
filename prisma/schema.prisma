@@ -27,6 +27,7 @@ model Project {
   title        String
   description  String
   image        String?
+  category     String?  // e.g., "Security Systems", "Corporate Security", "Event Protection"
   technologies String[]
   githubUrl    String?
   liveUrl      String?
