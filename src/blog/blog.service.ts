@@ -27,6 +27,13 @@ export class BlogService {
     });
   }
 
+  async update(id: string, updateBlogDto: CreateBlogDto) {
+    return this.prisma.blog.update({
+      where: { id },
+      data: updateBlogDto,
+    });
+  }
+
   async remove(id: string) {
     return this.prisma.blog.delete({
       where: { id },
