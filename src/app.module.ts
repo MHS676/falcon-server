@@ -16,6 +16,7 @@ import { GalleryModule } from './gallery/gallery.module';
 import { JobsModule } from './jobs/jobs.module';
 import { MessagingModule } from './messaging/messaging.module';
 import { SitemapModule } from './sitemap/sitemap.module';
+import { EmployeeModule } from './employee/employee.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { SitemapModule } from './sitemap/sitemap.module';
     JobsModule,
     MessagingModule,
     SitemapModule,
+    EmployeeModule,
   ],
 })
 export class AppModule {}
