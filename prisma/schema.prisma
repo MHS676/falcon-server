@@ -135,9 +135,13 @@ model Application {
   phone       String?
   resume      String? // URL to resume file
   coverLetter String?
+  category    String? // e.g., 'Security Guard', 'Supervisor', 'Manager', etc.
   status      String   @default("pending") // pending, reviewed, shortlisted, rejected, hired
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
 }
 
 model Service {

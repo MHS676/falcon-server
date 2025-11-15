@@ -183,9 +183,15 @@ export class CareerService {
     }
   }
 
-  async findAllApplications(careerId?: string) {
+  async findAllApplications(careerId?: string, category?: string, status?: string) {
+    const where: any = {};
+    
+    if (careerId) where.careerId = careerId;
+    if (category) where.category = category;
+    if (status) where.status = status;
+
     return await this.prisma.application.findMany({
-      where: careerId ? { careerId } : {},
+      where,
       include: {
         career: {
           select: {
@@ -284,5 +290,42 @@ export class CareerService {
       applicationsByStatus,
       recentApplications,
     };
+  }
+
+  async getApplicationsByCategory() {
+    const applicationsByCategory = await this.prisma.application.groupBy({
+      by: ['category'],
+      _count: true,
+      orderBy: {
+        _count: {
+          category: 'desc',
+        },
+      },
+    });
+
+    const categories = await Promise.all(
+      applicationsByCategory.map(async (group) => {
+        const applications = await this.prisma.application.findMany({
+          where: { category: group.category },
+          include: {
+            career: {
+              select: {
+                title: true,
+                type: true,
+              },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        });
+
+        return {
+          category: group.category || 'Uncategorized',
+          count: group._count,
+          applications,
+        };
+      }),
+    );
+
+    return categories;
   }
 }

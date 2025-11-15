@@ -21,4 +21,8 @@ export class CreateApplicationDto {
   @IsOptional()
   @IsString()
   coverLetter?: string;
+
+  @IsOptional()
+  @IsString()
+  category?: string; // e.g., 'Security Guard', 'Supervisor', 'Manager', etc.
 }
