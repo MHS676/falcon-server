@@ -1,0 +1,1037 @@
+{
+  "info": {
+    "name": "Falcon Security API",
+    "_postman_id": "falcon-security-api-2025",
+    "description": "Complete API collection for Falcon Security Limited backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set(\"token\", jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@falconsecurity.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "Get All Employees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employee",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Employees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employee/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", "active"]
+            }
+          }
+        },
+        {
+          "name": "Get Employee Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employee/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Get Employees by Department",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employee/department/Security",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", "department", "Security"]
+            }
+          }
+        },
+        {
+          "name": "Get Employees by Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employee/status/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", "status", "active"]
+            }
+          }
+        },
+        {
+          "name": "Get Employee by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employee/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Employee",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "employeeId",
+                  "value": "EMP-002",
+                  "type": "text"
+                },
+                {
+                  "key": "firstName",
+                  "value": "Jane",
+                  "type": "text"
+                },
+                {
+                  "key": "lastName",
+                  "value": "Smith",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "jane.smith@falconsecurity.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+1234567890",
+                  "type": "text"
+                },
+                {
+                  "key": "position",
+                  "value": "Security Supervisor",
+                  "type": "text"
+                },
+                {
+                  "key": "department",
+                  "value": "Security",
+                  "type": "text"
+                },
+                {
+                  "key": "employmentType",
+                  "value": "full-time",
+                  "type": "text"
+                },
+                {
+                  "key": "country",
+                  "value": "Bangladesh",
+                  "type": "text"
+                },
+                {
+                  "key": "joinDate",
+                  "value": "2024-01-15",
+                  "type": "text"
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "type": "text"
+                },
+                {
+                  "key": "skills",
+                  "value": "[\"Leadership\", \"Security Management\"]",
+                  "type": "text"
+                },
+                {
+                  "key": "certifications",
+                  "value": "[\"Security License\", \"First Aid\"]",
+                  "type": "text"
+                },
+                {
+                  "key": "photo",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "resume",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "idCard",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employee",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee"]
+            }
+          }
+        },
+        {
+          "name": "Update Employee",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "on-leave",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+9876543210",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employee/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Employee",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employee/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Career & Applications",
+      "item": [
+        {
+          "name": "Get Active Careers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "active"]
+            }
+          }
+        },
+        {
+          "name": "Get All Careers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career?includeInactive=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["career"],
+              "query": [
+                {
+                  "key": "includeInactive",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Career Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Create Career",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Security Guard\",\n  \"description\": \"We are looking for a professional security guard...\",\n  \"requirements\": [\"High school diploma\", \"Security license\", \"Good communication skills\"],\n  \"location\": \"Dhaka, Bangladesh\",\n  \"type\": \"full-time\",\n  \"salary\": \"BDT 20,000 - 25,000\",\n  \"deadline\": \"2025-12-31\",\n  \"active\": true,\n  \"featured\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/career",
+              "host": ["{{baseUrl}}"],
+              "path": ["career"]
+            }
+          }
+        },
+        {
+          "name": "Update Career",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"active\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/career/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Career",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit Application (with CV)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "careerId",
+                  "value": "",
+                  "type": "text",
+                  "description": "Career ID to apply for"
+                },
+                {
+                  "key": "fullName",
+                  "value": "John Doe",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "john.doe@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+1234567890",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "Security Guard",
+                  "type": "text",
+                  "description": "Category: Security Guard, Supervisor, Manager, etc."
+                },
+                {
+                  "key": "coverLetter",
+                  "value": "I am interested in this position because...",
+                  "type": "text"
+                },
+                {
+                  "key": "resume",
+                  "type": "file",
+                  "src": [],
+                  "description": "Upload CV/Resume (PDF, DOC, DOCX - Max 5MB)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/career/apply",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "apply"]
+            }
+          }
+        },
+        {
+          "name": "Get All Applications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "applications"]
+            }
+          }
+        },
+        {
+          "name": "Get Applications by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/applications?category=Security Guard",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "applications"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Security Guard"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Applications by Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/applications?status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "applications"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "description": "pending, reviewed, shortlisted, rejected, hired"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Applications Grouped by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/applications/by-category",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "applications", "by-category"]
+            }
+          }
+        },
+        {
+          "name": "Get Application by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/applications/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "applications", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"shortlisted\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/career/applications/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "applications", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Valid statuses: pending, reviewed, shortlisted, rejected, hired"
+          }
+        },
+        {
+          "name": "Delete Application",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/career/applications/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["career", "applications", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Banner",
+      "item": [
+        {
+          "name": "Get All Banners",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/banner",
+              "host": ["{{baseUrl}}"],
+              "path": ["banner"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Banners",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/banner/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["banner", "active"]
+            }
+          }
+        },
+        {
+          "name": "Create Banner",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Welcome to Falcon Security",
+                  "type": "text"
+                },
+                {
+                  "key": "subtitle",
+                  "value": "Your Safety, Our Priority",
+                  "type": "text"
+                },
+                {
+                  "key": "active",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/banner",
+              "host": ["{{baseUrl}}"],
+              "path": ["banner"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Get All Contacts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contact",
+              "host": ["{{baseUrl}}"],
+              "path": ["contact"]
+            }
+          }
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contact/unread-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["contact", "unread-count"]
+            }
+          }
+        },
+        {
+          "name": "Submit Contact",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"+1234567890\",\n  \"serviceType\": \"Security Guard\",\n  \"message\": \"I need security services...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contact",
+              "host": ["{{baseUrl}}"],
+              "path": ["contact"]
+            }
+          }
+        },
+        {
+          "name": "Mark as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contact/:id/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["contact", ":id", "read"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Get All Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["services"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/services/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["services", "active"]
+            }
+          }
+        },
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Armed Security\",\n  \"description\": \"Professional armed security services\",\n  \"icon\": \"shield\",\n  \"features\": [\"24/7 Protection\", \"Trained Guards\", \"Quick Response\"],\n  \"active\": true,\n  \"featured\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["services"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blog",
+      "item": [
+        {
+          "name": "Get All Blogs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blog",
+              "host": ["{{baseUrl}}"],
+              "path": ["blog"]
+            }
+          }
+        },
+        {
+          "name": "Get Published Blogs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blog/published",
+              "host": ["{{baseUrl}}"],
+              "path": ["blog", "published"]
+            }
+          }
+        },
+        {
+          "name": "Create Blog",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Security Tips for Businesses",
+                  "type": "text"
+                },
+                {
+                  "key": "content",
+                  "value": "Blog content here...",
+                  "type": "text"
+                },
+                {
+                  "key": "author",
+                  "value": "Admin",
+                  "type": "text"
+                },
+                {
+                  "key": "published",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blog",
+              "host": ["{{baseUrl}}"],
+              "path": ["blog"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "Get All Clients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            }
+          }
+        },
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "ABC Corporation",
+                  "type": "text"
+                },
+                {
+                  "key": "active",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gallery",
+      "item": [
+        {
+          "name": "Get All Gallery Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gallery",
+              "host": ["{{baseUrl}}"],
+              "path": ["gallery"]
+            }
+          }
+        },
+        {
+          "name": "Upload Gallery Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Security Team",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "Team",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/gallery",
+              "host": ["{{baseUrl}}"],
+              "path": ["gallery"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "item": [
+        {
+          "name": "Get Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["settings"]
+            }
+          }
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"siteName\": \"Falcon Security Limited\",\n  \"siteDescription\": \"Professional Security Services\",\n  \"contactEmail\": \"info@falconsecurity.com\",\n  \"contactPhone\": \"+880-1234567890\",\n  \"address\": \"Dhaka, Bangladesh\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["settings"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Messaging",
+      "item": [
+        {
+          "name": "Get All Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messaging",
+              "host": ["{{baseUrl}}"],
+              "path": ["messaging"]
+            }
+          }
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messaging/unread-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["messaging", "unread-count"]
+            }
+          }
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"message\": \"Hello, I have a question...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/messaging",
+              "host": ["{{baseUrl}}"],
+              "path": ["messaging"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
