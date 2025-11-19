@@ -471,7 +471,7 @@ async function main() {
       data: {
         title: 'Professional Security Solutions',
         subtitle: 'Protecting what matters most with 15+ years of expertise',
-        image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=800&fit=crop',
+        image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=700&fit=crop&crop=center',
         buttonText: 'Our Services',
         buttonUrl: '/services',
         order: 1,
@@ -482,7 +482,7 @@ async function main() {
       data: {
         title: '24/7 Armed & Unarmed Security',
         subtitle: 'Licensed professionals ready to protect your business',
-        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=800&fit=crop',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=700&fit=crop&crop=center',
         buttonText: 'Contact Us',
         buttonUrl: '/contact',
         order: 2,
@@ -493,7 +493,7 @@ async function main() {
       data: {
         title: 'Trusted by 500+ Businesses',
         subtitle: 'From retail stores to corporate offices - we secure it all',
-        image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?w=1920&h=800&fit=crop',
+        image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?w=1920&h=700&fit=crop&crop=center',
         buttonText: 'View Gallery',
         buttonUrl: '/gallery',
         order: 3,
