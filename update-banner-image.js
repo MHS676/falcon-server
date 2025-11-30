@@ -7,39 +7,53 @@ async function updateBannerWithExistingImage() {
   try {
     console.log("🔧 Updating banner with missing image...\n");
 
-    // Find the banner with the broken image
-    const bannerToUpdate = await prisma.banner.findFirst({
+    // Find all banners with localhost URLs
+    const banners = await prisma.banner.findMany({
       where: {
         image: {
-          contains: "1764471394933-vr6vdk.jpg",
+          contains: "localhost:3001/uploads/banner",
         },
       },
     });
 
-    if (!bannerToUpdate) {
-      console.log("❌ Banner with broken image not found");
+    if (banners.length === 0) {
+      console.log("❌ No banners with local image URLs found");
       return;
     }
 
-    console.log(`📋 Found banner: "${bannerToUpdate.title}"`);
-    console.log(`   Old image: ${bannerToUpdate.image}`);
+    // Check which ones have missing files
+    const fs = require("fs");
+    const path = require("path");
+    const uploadsDir = path.join(__dirname, "uploads", "banner");
 
-    // Update to use the existing image
-    const newImageUrl =
-      "http://localhost:3001/uploads/banner/1763196597155-wqiysj.jpg";
+    for (const banner of banners) {
+      const filename = banner.image.split("/").pop();
+      const filepath = path.join(uploadsDir, filename);
 
-    const updated = await prisma.banner.update({
-      where: { id: bannerToUpdate.id },
-      data: { image: newImageUrl },
-    });
+      if (!fs.existsSync(filepath)) {
+        console.log(`📋 Found banner with missing image: "${banner.title}"`);
+        console.log(`   Old image: ${banner.image}`);
 
-    console.log(`   New image: ${updated.image}`);
-    console.log("\n✅ Banner updated successfully!");
-    console.log("\n💡 Next steps:");
-    console.log("   1. Check the frontend - the image should now display");
+        // Update to use the existing image
+        const newImageUrl =
+          "http://localhost:3001/uploads/banner/1763196597155-wqiysj.jpg";
+
+        const updated = await prisma.banner.update({
+          where: { id: banner.id },
+          data: { image: newImageUrl },
+        });
+
+        console.log(`   New image: ${updated.image}`);
+        console.log("✅ Banner updated successfully!\n");
+      }
+    }
+
+    console.log("💡 Next steps:");
     console.log(
-      "   2. If you want a different image, upload it via the admin panel"
+      "   1. Restart the backend server for upload fix to take effect"
     );
+    console.log("   2. Check the frontend - images should now display");
+    console.log("   3. Try uploading a new banner image to test the fix");
   } catch (error) {
     console.error("❌ Error:", error);
   } finally {

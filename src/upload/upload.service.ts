@@ -48,24 +48,14 @@ export class UploadService {
     const filename = `${timestamp}-${randomStr}${ext}`;
     const filepath = path.join(folderPath, filename);
 
-    // Write file - handle both buffer and stream cases
-    let buffer: Buffer;
-    if (file.buffer) {
-      buffer = file.buffer;
-    } else if (file.path) {
-      buffer = fs.readFileSync(file.path);
-    } else {
+    // Validate file buffer exists (from memory storage)
+    if (!file.buffer || file.buffer.length === 0) {
       throw new BadRequestException('File buffer is empty');
     }
     
-    // Ensure we have data
-    if (!buffer || buffer.length === 0) {
-      throw new BadRequestException('File has no data');
-    }
-    
     try {
-      fs.writeFileSync(filepath, buffer);
-      console.log(`✅ File saved: ${filepath}`);
+      fs.writeFileSync(filepath, file.buffer);
+      console.log(`✅ File saved successfully: ${filepath} (${file.buffer.length} bytes)`);
     } catch (err) {
       console.error(`❌ Failed to save file: ${filepath}`, err);
       throw new BadRequestException(`Failed to write file: ${(err as Error)?.message}`);
