@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # Banner Image Upload Fix - Solution Summary
 
 ## Problem Identified ❌
@@ -17,6 +19,7 @@ When uploading banner images, they were not displaying because:
 ## System Architecture 🏗️
 
 ### Upload Flow:
+
 ```
 Frontend Upload → Backend Controller → Upload Service → Local Storage → Database
                                                            ↓
@@ -24,6 +27,7 @@ Frontend Upload → Backend Controller → Upload Service → Local Storage → 
 ```
 
 ### File Serving:
+
 ```
 Browser Request → Backend Static Serve → File from /uploads/banner/
 ```
@@ -45,19 +49,25 @@ Browser Request → Backend Static Serve → File from /uploads/banner/
 ## Diagnostic Scripts Created 🔧
 
 ### 1. `check-banners.js`
+
 Lists all banners and their image URLs
+
 ```bash
 node check-banners.js
 ```
 
 ### 2. `fix-banner-images.js`
+
 Checks for broken image references and shows available files
+
 ```bash
 node fix-banner-images.js
 ```
 
 ### 3. `update-banner-image.js`
+
 Automatically fixes broken banner references
+
 ```bash
 node update-banner-image.js
 ```
@@ -83,6 +93,7 @@ node update-banner-image.js
 ## Testing the Fix 🧪
 
 1. **Start the backend**:
+
    ```bash
    cd backend
    npm run start:dev
@@ -130,6 +141,7 @@ backend/
 ## Configuration Check ⚙️
 
 ### Backend `.env`:
+
 ```env
 PORT=3001
 NODE_ENV=development
@@ -138,6 +150,7 @@ DATABASE_URL="postgresql://..."
 ```
 
 ### Frontend `.env`:
+
 ```env
 VITE_API_BASE_URL="http://localhost:3001/api"  # Must match backend
 ```
@@ -147,11 +160,13 @@ VITE_API_BASE_URL="http://localhost:3001/api"  # Must match backend
 ### Issue: "Image not found" error
 
 1. **Check file exists**:
+
    ```bash
    ls backend/uploads/banner/
    ```
 
 2. **Check database URL**:
+
    ```bash
    cd backend
    node check-banners.js
@@ -163,6 +178,7 @@ VITE_API_BASE_URL="http://localhost:3001/api"  # Must match backend
 ### Issue: Upload fails
 
 1. **Check uploads directory permissions**:
+
    ```bash
    # Should be writable
    ls -la backend/uploads/
