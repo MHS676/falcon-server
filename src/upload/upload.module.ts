@@ -8,6 +8,9 @@ import * as multer from 'multer';
   imports: [
     MulterModule.register({
       storage: multer.memoryStorage(), // Store files in memory as buffer
+      limits: {
+        fileSize: 10 * 1024 * 1024, // 10MB max file size
+      },
     }),
   ],
   controllers: [UploadController],

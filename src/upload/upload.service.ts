@@ -49,8 +49,14 @@ export class UploadService {
     const filepath = path.join(folderPath, filename);
 
     // Validate file buffer exists (from memory storage)
-    if (!file.buffer || file.buffer.length === 0) {
-      throw new BadRequestException('File buffer is empty');
+    if (!file.buffer) {
+      console.error('❌ File buffer is missing');
+      throw new BadRequestException('File buffer is missing - check multer configuration');
+    }
+    
+    if (file.buffer.length === 0) {
+      console.error('❌ File buffer is empty');
+      throw new BadRequestException('File buffer is empty - uploaded file has no content');
     }
     
     try {

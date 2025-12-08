@@ -30,7 +30,13 @@ export class BannerController {
     @UploadedFile() file?: Express.Multer.File,
   ) {
     console.log('📥 Banner create request received');
-    console.log('File:', file ? { name: file.originalname, size: file.size, mimetype: file.mimetype } : 'NO FILE');
+    console.log('File:', file ? { 
+      name: file.originalname, 
+      size: file.size, 
+      mimetype: file.mimetype,
+      hasBuffer: !!file.buffer,
+      bufferLength: file.buffer?.length || 0
+    } : 'NO FILE');
     console.log('DTO:', createBannerDto);
     
     let imageUrl = createBannerDto.image;
