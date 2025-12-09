@@ -15,7 +15,7 @@ export class UploadService {
     const baseDir = isProd ? '/data' : process.cwd();
     this.uploadsDir = path.join(baseDir, 'uploads');
     this.appUrl = this.configService.get<string>('APP_URL') || 'http://localhost:3001';
-    
+
     // Ensure uploads directory exists
     if (!fs.existsSync(this.uploadsDir)) {
       fs.mkdirSync(this.uploadsDir, { recursive: true });
@@ -35,7 +35,7 @@ export class UploadService {
 
   private async uploadToLocalStorage(file: Express.Multer.File, folder: string): Promise<string> {
     const folderPath = path.join(this.uploadsDir, folder);
-    
+
     // Ensure folder exists
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath, { recursive: true });
@@ -52,7 +52,7 @@ export class UploadService {
     if (!file.buffer || file.buffer.length === 0) {
       throw new BadRequestException('File buffer is empty');
     }
-    
+
     try {
       fs.writeFileSync(filepath, file.buffer);
       console.log(`✅ File saved successfully: ${filepath} (${file.buffer.length} bytes)`);
