@@ -50,8 +50,11 @@ export class UploadService {
     folder = "portfolio",
   ): Promise<string> {
     try {
+      // Check if file is a document (PDF, DOC, DOCX)
+      const isDocument = file.originalname.match(/\.(pdf|doc|docx)$/i);
+      
       if (this.useCloudinary) {
-        return await this.uploadToCloudinary(file, folder);
+        return await this.uploadToCloudinary(file, folder, isDocument ? 'raw' : 'auto');
       }
       // Fallback to local file storage
       return await this.uploadToLocalStorage(file, folder);
@@ -70,42 +73,74 @@ export class UploadService {
   private async uploadToCloudinary(
     file: Express.Multer.File,
     folder: string,
+    resourceType: 'auto' | 'image' | 'video' | 'raw' = 'auto',
   ): Promise<string> {
     // Validate file buffer exists
     if (!file.buffer || file.buffer.length === 0) {
       throw new BadRequestException("File buffer is empty");
     }
 
-    return new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: `falcon-security/${folder}`,
-          resource_type: "auto",
-        },
-        (error, result: UploadApiResponse | undefined) => {
-          if (error) {
-            console.error("❌ Cloudinary upload error:", error);
-            reject(
-              new BadRequestException(
-                `Cloudinary upload failed: ${error.message}`,
-              ),
-            );
-          } else if (result) {
-            console.log(
-              `✅ Cloudinary upload successful: ${result.secure_url}`,
-            );
-            resolve(result.secure_url);
-          } else {
-            reject(
-              new BadRequestException("Cloudinary upload returned no result"),
-            );
-          }
-        },
-      );
+    // Generate a unique filename
+    const originalName = file.originalname;
+    const ext = path.extname(originalName).toLowerCase();
+    const baseName = path.basename(originalName, ext).replace(/[^a-zA-Z0-9-_]/g, '_');
+    const uniqueId = `${baseName}_${Date.now()}`;
 
-      // Write buffer to upload stream
-      uploadStream.end(file.buffer);
-    });
+    try {
+      // For documents (PDF, DOC, DOCX), use base64 upload with data URI
+      if (resourceType === 'raw') {
+        const mimeType = file.mimetype || 'application/octet-stream';
+        const base64Data = file.buffer.toString('base64');
+        const dataUri = `data:${mimeType};base64,${base64Data}`;
+        
+        const result = await cloudinary.uploader.upload(dataUri, {
+          folder: `falcon-security/${folder}`,
+          resource_type: 'raw',
+          public_id: uniqueId + ext,
+        });
+        
+        console.log(`✅ Cloudinary upload successful: ${result.secure_url}`);
+        return result.secure_url;
+      }
+
+      // For images, use stream upload
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: `falcon-security/${folder}`,
+            resource_type: resourceType,
+            public_id: uniqueId,
+          },
+          (error, result: UploadApiResponse | undefined) => {
+            if (error) {
+              console.error("❌ Cloudinary upload error:", error);
+              reject(
+                new BadRequestException(
+                  `Cloudinary upload failed: ${error.message}`,
+                ),
+              );
+            } else if (result) {
+              console.log(
+                `✅ Cloudinary upload successful: ${result.secure_url}`,
+              );
+              resolve(result.secure_url);
+            } else {
+              reject(
+                new BadRequestException("Cloudinary upload returned no result"),
+              );
+            }
+          },
+        );
+
+        // Write buffer to upload stream
+        uploadStream.end(file.buffer);
+      });
+    } catch (error) {
+      console.error("❌ Cloudinary upload error:", error);
+      throw new BadRequestException(
+        `Cloudinary upload failed: ${(error as Error).message}`,
+      );
+    }
   }
 
   private async uploadToLocalStorage(
