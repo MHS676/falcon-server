@@ -18,12 +18,14 @@ import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { CreateJobApplicationDto } from './dto/create-job-application.dto';
 import { UpdateJobApplicationDto } from './dto/update-job-application.dto';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { UploadService } from '../upload/upload.service';
 
 @Controller('jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) {}
+  constructor(
+    private readonly jobsService: JobsService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   // Job endpoints
   @Post()
@@ -67,13 +69,6 @@ export class JobsController {
   @Post('apply')
   @UseInterceptors(
     FileInterceptor('resume', {
-      storage: diskStorage({
-        destination: './uploads/resumes',
-        filename: (req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          cb(null, `resume-${uniqueSuffix}${extname(file.originalname)}`);
-        },
-      }),
       fileFilter: (req, file, cb) => {
         if (file.mimetype.match(/\/(pdf|doc|docx)$/)) {
           cb(null, true);
@@ -94,24 +89,18 @@ export class JobsController {
       throw new BadRequestException('Resume file is required');
     }
 
+    // Upload resume to Cloudinary
+    const resumeUrl = await this.uploadService.uploadImage(resumeFile, 'resumes');
+
     return this.jobsService.createJobApplication(
       createJobApplicationDto,
-      `/uploads/resumes/${resumeFile.filename}`,
+      resumeUrl,
     );
   }
 
   @Post('apply-with-portfolio')
   @UseInterceptors(
     FilesInterceptor('files', 10, {
-      storage: diskStorage({
-        destination: './uploads/portfolios',
-        filename: (req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          const isResume = file.fieldname === 'resume';
-          const prefix = isResume ? 'resume' : 'portfolio';
-          cb(null, `${prefix}-${uniqueSuffix}${extname(file.originalname)}`);
-        },
-      }),
       fileFilter: (req, file, cb) => {
         const isResume = file.fieldname === 'resume';
         if (isResume) {
@@ -144,11 +133,17 @@ export class JobsController {
       throw new BadRequestException('Resume file is required');
     }
 
-    const portfolioPaths = portfolioFiles.map(f => `/uploads/portfolios/${f.filename}`);
+    // Upload resume to Cloudinary
+    const resumeUrl = await this.uploadService.uploadImage(resumeFile, 'resumes');
+
+    // Upload portfolio files to Cloudinary
+    const portfolioPaths = await Promise.all(
+      portfolioFiles.map(f => this.uploadService.uploadImage(f, 'portfolios'))
+    );
 
     return this.jobsService.createJobApplication(
       createJobApplicationDto,
-      `/uploads/resumes/${resumeFile.filename}`,
+      resumeUrl,
       portfolioPaths,
     );
   }

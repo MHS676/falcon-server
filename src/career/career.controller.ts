@@ -12,16 +12,18 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { CareerService } from './career.service';
 import { CreateCareerDto } from './dto/create-career.dto';
 import { UpdateCareerDto } from './dto/update-career.dto';
 import { CreateApplicationDto } from './dto/create-application.dto';
+import { UploadService } from '../upload/upload.service';
 
 @Controller('career')
 export class CareerController {
-  constructor(private readonly careerService: CareerService) {}
+  constructor(
+    private readonly careerService: CareerService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   // Public routes for career listings
   @Get('active')
@@ -43,16 +45,6 @@ export class CareerController {
   @Post('apply')
   @UseInterceptors(
     FileInterceptor('resume', {
-      storage: diskStorage({
-        destination: './uploads/resumes',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
       fileFilter: (req, file, cb) => {
         if (!file.originalname.match(/\.(pdf|doc|docx)$/)) {
           return cb(new Error('Only PDF and DOC files are allowed!'), false);
@@ -64,12 +56,14 @@ export class CareerController {
       },
     }),
   )
-  createApplication(
+  async createApplication(
     @Body() createApplicationDto: CreateApplicationDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
     if (file) {
-      createApplicationDto.resume = `uploads/resumes/${file.filename}`;
+      // Upload resume to Cloudinary
+      const resumeUrl = await this.uploadService.uploadImage(file, 'resumes');
+      createApplicationDto.resume = resumeUrl;
     }
     return this.careerService.createApplication(createApplicationDto);
   }
