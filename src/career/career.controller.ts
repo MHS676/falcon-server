@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   Controller,
   Get,
@@ -10,15 +12,15 @@ import {
   ParseUUIDPipe,
   UseInterceptors,
   UploadedFile,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { CareerService } from './career.service';
-import { CreateCareerDto } from './dto/create-career.dto';
-import { UpdateCareerDto } from './dto/update-career.dto';
-import { CreateApplicationDto } from './dto/create-application.dto';
-import { UploadService } from '../upload/upload.service';
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { CareerService } from "./career.service";
+import { CreateCareerDto } from "./dto/create-career.dto";
+import { UpdateCareerDto } from "./dto/update-career.dto";
+import { CreateApplicationDto } from "./dto/create-application.dto";
+import { UploadService } from "../upload/upload.service";
 
-@Controller('career')
+@Controller("career")
 export class CareerController {
   constructor(
     private readonly careerService: CareerService,
@@ -26,28 +28,28 @@ export class CareerController {
   ) {}
 
   // Public routes for career listings
-  @Get('active')
+  @Get("active")
   findActive() {
     return this.careerService.findActive();
   }
 
-  @Get('featured')
+  @Get("featured")
   findFeatured() {
     return this.careerService.findFeatured();
   }
 
-  @Get('public/:id')
-  findOnePublic(@Param('id', ParseUUIDPipe) id: string) {
+  @Get("public/:id")
+  findOnePublic(@Param("id", ParseUUIDPipe) id: string) {
     return this.careerService.findOne(id);
   }
 
   // Public route for job applications
-  @Post('apply')
+  @Post("apply")
   @UseInterceptors(
-    FileInterceptor('resume', {
+    FileInterceptor("resume", {
       fileFilter: (req, file, cb) => {
         if (!file.originalname.match(/\.(pdf|doc|docx)$/)) {
-          return cb(new Error('Only PDF and DOC files are allowed!'), false);
+          return cb(new Error("Only PDF and DOC files are allowed!"), false);
         }
         cb(null, true);
       },
@@ -62,7 +64,7 @@ export class CareerController {
   ) {
     if (file) {
       // Upload resume to Cloudinary
-      const resumeUrl = await this.uploadService.uploadImage(file, 'resumes');
+      const resumeUrl = await this.uploadService.uploadImage(file, "resumes");
       createApplicationDto.resume = resumeUrl;
     }
     return this.careerService.createApplication(createApplicationDto);
@@ -75,62 +77,62 @@ export class CareerController {
   }
 
   @Get()
-  findAll(@Query('includeInactive') includeInactive?: string) {
-    return this.careerService.findAll(includeInactive === 'true');
+  findAll(@Query("includeInactive") includeInactive?: string) {
+    return this.careerService.findAll(includeInactive === "true");
   }
 
-  @Get('stats')
+  @Get("stats")
   getStats() {
     return this.careerService.getCareerStats();
   }
 
-  @Get('applications')
+  @Get("applications")
   findAllApplications(
-    @Query('careerId') careerId?: string,
-    @Query('category') category?: string,
-    @Query('status') status?: string,
+    @Query("careerId") careerId?: string,
+    @Query("category") category?: string,
+    @Query("status") status?: string,
   ) {
     return this.careerService.findAllApplications(careerId, category, status);
   }
 
-  @Get('applications/by-category')
+  @Get("applications/by-category")
   getApplicationsByCategory() {
     return this.careerService.getApplicationsByCategory();
   }
 
-  @Get('applications/:id')
-  findApplication(@Param('id', ParseUUIDPipe) id: string) {
+  @Get("applications/:id")
+  findApplication(@Param("id", ParseUUIDPipe) id: string) {
     return this.careerService.findApplicationById(id);
   }
 
-  @Patch('applications/:id/status')
+  @Patch("applications/:id/status")
   updateApplicationStatus(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body('status') status: string,
+    @Param("id", ParseUUIDPipe) id: string,
+    @Body("status") status: string,
   ) {
     return this.careerService.updateApplicationStatus(id, status);
   }
 
-  @Delete('applications/:id')
-  deleteApplication(@Param('id', ParseUUIDPipe) id: string) {
+  @Delete("applications/:id")
+  deleteApplication(@Param("id", ParseUUIDPipe) id: string) {
     return this.careerService.deleteApplication(id);
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  @Get(":id")
+  findOne(@Param("id", ParseUUIDPipe) id: string) {
     return this.careerService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(":id")
   update(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param("id", ParseUUIDPipe) id: string,
     @Body() updateCareerDto: UpdateCareerDto,
   ) {
     return this.careerService.update(id, updateCareerDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
+  @Delete(":id")
+  remove(@Param("id", ParseUUIDPipe) id: string) {
     return this.careerService.remove(id);
   }
 }

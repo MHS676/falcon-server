@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   Controller,
   Get,
@@ -11,16 +13,16 @@ import {
   BadRequestException,
   UploadedFile,
   Query,
-} from '@nestjs/common';
-import { FilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { JobsService } from './jobs.service';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
-import { CreateJobApplicationDto } from './dto/create-job-application.dto';
-import { UpdateJobApplicationDto } from './dto/update-job-application.dto';
-import { UploadService } from '../upload/upload.service';
+} from "@nestjs/common";
+import { FilesInterceptor, FileInterceptor } from "@nestjs/platform-express";
+import { JobsService } from "./jobs.service";
+import { CreateJobDto } from "./dto/create-job.dto";
+import { UpdateJobDto } from "./dto/update-job.dto";
+import { CreateJobApplicationDto } from "./dto/create-job-application.dto";
+import { UpdateJobApplicationDto } from "./dto/update-job-application.dto";
+import { UploadService } from "../upload/upload.service";
 
-@Controller('jobs')
+@Controller("jobs")
 export class JobsController {
   constructor(
     private readonly jobsService: JobsService,
@@ -39,41 +41,46 @@ export class JobsController {
     return this.jobsService.getAllJobs();
   }
 
-  @Get('active')
+  @Get("active")
   async getActiveJobs() {
     return this.jobsService.getActiveJobs();
   }
 
-  @Get('stats')
+  @Get("stats")
   async getJobStats() {
     return this.jobsService.getJobStats();
   }
 
-  @Get(':id')
-  async getJobById(@Param('id') id: string) {
+  @Get(":id")
+  async getJobById(@Param("id") id: string) {
     return this.jobsService.getJobById(id);
   }
 
-  @Patch(':id')
-  async updateJob(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
+  @Patch(":id")
+  async updateJob(@Param("id") id: string, @Body() updateJobDto: UpdateJobDto) {
     // DTO @Transform decorators handle array parsing automatically
     return this.jobsService.updateJob(id, updateJobDto);
   }
 
-  @Delete(':id')
-  async deleteJob(@Param('id') id: string) {
+  @Delete(":id")
+  async deleteJob(@Param("id") id: string) {
     return this.jobsService.deleteJob(id);
   }
 
   // Job Application endpoints
-  @Post('apply')
+  @Post("apply")
   @UseInterceptors(
-    FileInterceptor('resume', {
+    FileInterceptor("resume", {
       fileFilter: (req, file, cb) => {
         if (file.mimetype.match(/\/(pdf|doc|docx)$/)) {
           cb(null, true);
         } else {
-          cb(new BadRequestException('Only PDF, DOC, and DOCX files are allowed for resumes'), false);
+          cb(
+            new BadRequestException(
+              "Only PDF, DOC, and DOCX files are allowed for resumes",
+            ),
+            false,
+          );
         }
       },
       limits: {
@@ -86,11 +93,14 @@ export class JobsController {
     @UploadedFile() resumeFile: Express.Multer.File,
   ) {
     if (!resumeFile) {
-      throw new BadRequestException('Resume file is required');
+      throw new BadRequestException("Resume file is required");
     }
 
     // Upload resume to Cloudinary
-    const resumeUrl = await this.uploadService.uploadImage(resumeFile, 'resumes');
+    const resumeUrl = await this.uploadService.uploadImage(
+      resumeFile,
+      "resumes",
+    );
 
     return this.jobsService.createJobApplication(
       createJobApplicationDto,
@@ -98,22 +108,32 @@ export class JobsController {
     );
   }
 
-  @Post('apply-with-portfolio')
+  @Post("apply-with-portfolio")
   @UseInterceptors(
-    FilesInterceptor('files', 10, {
+    FilesInterceptor("files", 10, {
       fileFilter: (req, file, cb) => {
-        const isResume = file.fieldname === 'resume';
+        const isResume = file.fieldname === "resume";
         if (isResume) {
           if (file.mimetype.match(/\/(pdf|doc|docx)$/)) {
             cb(null, true);
           } else {
-            cb(new BadRequestException('Only PDF, DOC, and DOCX files are allowed for resumes'), false);
+            cb(
+              new BadRequestException(
+                "Only PDF, DOC, and DOCX files are allowed for resumes",
+              ),
+              false,
+            );
           }
         } else {
-          if (file.mimetype.match(/\/(pdf|doc|docx|jpg|jpeg|png|gif|zip|rar)$/)) {
+          if (
+            file.mimetype.match(/\/(pdf|doc|docx|jpg|jpeg|png|gif|zip|rar)$/)
+          ) {
             cb(null, true);
           } else {
-            cb(new BadRequestException('Invalid file type for portfolio'), false);
+            cb(
+              new BadRequestException("Invalid file type for portfolio"),
+              false,
+            );
           }
         }
       },
@@ -126,19 +146,24 @@ export class JobsController {
     @Body() createJobApplicationDto: CreateJobApplicationDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    const resumeFile = files.find(f => f.fieldname === 'resume');
-    const portfolioFiles = files.filter(f => f.fieldname !== 'resume');
+    const resumeFile = files.find((f) => f.fieldname === "resume");
+    const portfolioFiles = files.filter((f) => f.fieldname !== "resume");
 
     if (!resumeFile) {
-      throw new BadRequestException('Resume file is required');
+      throw new BadRequestException("Resume file is required");
     }
 
     // Upload resume to Cloudinary
-    const resumeUrl = await this.uploadService.uploadImage(resumeFile, 'resumes');
+    const resumeUrl = await this.uploadService.uploadImage(
+      resumeFile,
+      "resumes",
+    );
 
     // Upload portfolio files to Cloudinary
     const portfolioPaths = await Promise.all(
-      portfolioFiles.map(f => this.uploadService.uploadImage(f, 'portfolios'))
+      portfolioFiles.map((f) =>
+        this.uploadService.uploadImage(f, "portfolios"),
+      ),
     );
 
     return this.jobsService.createJobApplication(
@@ -148,31 +173,31 @@ export class JobsController {
     );
   }
 
-  @Get('applications/all')
+  @Get("applications/all")
   async getAllJobApplications() {
     return this.jobsService.getAllJobApplications();
   }
 
-  @Get('applications/job/:jobId')
-  async getJobApplicationsByJob(@Param('jobId') jobId: string) {
+  @Get("applications/job/:jobId")
+  async getJobApplicationsByJob(@Param("jobId") jobId: string) {
     return this.jobsService.getJobApplicationsByJob(jobId);
   }
 
-  @Get('applications/:id')
-  async getJobApplicationById(@Param('id') id: string) {
+  @Get("applications/:id")
+  async getJobApplicationById(@Param("id") id: string) {
     return this.jobsService.getJobApplicationById(id);
   }
 
-  @Patch('applications/:id')
+  @Patch("applications/:id")
   async updateJobApplication(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() updateJobApplicationDto: UpdateJobApplicationDto,
   ) {
     return this.jobsService.updateJobApplication(id, updateJobApplicationDto);
   }
 
-  @Delete('applications/:id')
-  async deleteJobApplication(@Param('id') id: string) {
+  @Delete("applications/:id")
+  async deleteJobApplication(@Param("id") id: string) {
     return this.jobsService.deleteJobApplication(id);
   }
 }
