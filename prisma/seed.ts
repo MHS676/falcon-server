@@ -33,7 +33,7 @@ async function main() {
   const admin = await prisma.admin.create({
     data: {
       name: "Falcon Security Admin",
-      email: "admin@falconsecurity.com",
+      email: "admin@falconslimited.com",
       password: hashedPassword,
       role: "superadmin",
       isActive: true,
@@ -43,8 +43,8 @@ async function main() {
   // Create a user for projects and contacts
   const user = await prisma.user.create({
     data: {
-      name: "Falcon Security",
-      email: "projects@falconsecurity.com",
+      name: "Falcon Security Limited",
+      email: "info@falconslimited.com",
       password: hashedPassword,
       role: "admin",
     },
@@ -53,23 +53,24 @@ async function main() {
   console.log("✅ Admin created:", admin.email);
   console.log("✅ User created:", user.email);
 
-  // Create comprehensive services for Falcon Security Limited
+  // =====================================================
+  // SERVICES - Real Falcon® Security Limited services
+  // =====================================================
   const services = await Promise.all([
     prisma.service.create({
       data: {
-        title: "Armed Security Guards",
+        title: "Executive Protection",
         description:
-          "Professional armed security personnel for high-risk environments and critical asset protection.",
+          "We have designed our executive protection group with the finest security personnel. They are trained to remain vigilant, proactive, clue full, at the same time calm and with presence of mind. Always ready to protect any individual exposed to threat. At Falcon®, the Executive Protection personnel are specially trained to handle all kinds of threat perceptions and intelligence gathering.\n\nFalcon® has successfully handled a number of clients providing personal and executive protection on high profile individuals. We always took care to keep intrusion or disturbance of our customers' normal day to day functioning to a minimum, without compromising on safety and efficiency. Our team is always ready to provide executive protection service to any Government officials Delegations, Politicians, Models, Celebrities, Diplomats, foreign envoys and so on.",
         icon: "ShieldCheckIcon",
         features: [
-          "Licensed armed officers",
-          "Emergency response training",
-          "Threat assessment expertise",
-          "Corporate security protocols",
-          "24/7 deployment availability",
+          "VVIP security & personal protection",
+          "Threat perception & intelligence gathering",
+          "Protection for government officials & diplomats",
+          "Celebrity & executive bodyguard services",
+          "Minimal intrusion on daily activities",
+          "Trained for all kinds of threat scenarios",
         ],
-        price: "Starting at $35/hour",
-        duration: "Flexible scheduling",
         active: true,
         featured: true,
         order: 1,
@@ -77,19 +78,18 @@ async function main() {
     }),
     prisma.service.create({
       data: {
-        title: "Unarmed Security Guards",
+        title: "Manned Guard Service",
         description:
-          "Trained security personnel for access control, surveillance, and general protection services.",
+          "Our manned guarding service is the biggest division of the company. Over 30% of Falcon® guard force are deployed in contracts where highly skilled work under stringent safety and security standard are maintained. This has led us to years of experience in Health Environment Safety (HES) training, for which the guard force has become fully compliant.\n\nFalcon® provides male and female security guards at Industrial premises, large corporate buildings, offices, banks, NGOs, construction sites, homes, apartments, events etc. Guards can be provided for any time of the day in 8 hour shifts as per requirement of the client.\n\nWe also provide executive protection service for both local and expats as bodyguards and escorts. The company also provides peons, tea boys, maintenance staff, messengers and drivers who are well trained to cater to the needs of the clients.",
         icon: "UserGroupIcon",
         features: [
-          "Professional uniformed guards",
-          "Access control management",
-          "Patrol and surveillance",
-          "Incident reporting",
-          "Customer service training",
+          "Male & female security guards",
+          "Industrial premises & corporate buildings",
+          "Banks, NGOs & construction sites",
+          "8 hour shift deployment",
+          "Health Environment Safety (HES) compliant",
+          "Auxiliary services: peons, drivers, maintenance staff",
         ],
-        price: "Starting at $22/hour",
-        duration: "Flexible shifts",
         active: true,
         featured: true,
         order: 2,
@@ -97,19 +97,18 @@ async function main() {
     }),
     prisma.service.create({
       data: {
-        title: "Mobile Patrol Services",
+        title: "Risk Consulting",
         description:
-          "Comprehensive mobile security patrols for multiple locations and large properties.",
-        icon: "TruckIcon",
+          "Falcon's® Risk Consulting supports clients to evaluate and understand the risks they and their organisations may face, acting to mitigate these risks wherever possible, and providing the tools to fully prepare clients to react successfully to a crisis should it occur.\n\nWe offer trusted security advice, risk mitigation strategies, secure support and integrated solutions for strategic clients or those operating in complex or sensitive environments. Whether threats are from crime or terrorism, we work to design and implement effective measures to mitigate or manage these risks.\n\nEVERY SOLUTION STARTS WITH UNDERSTANDING THE THREAT. Our team of experts provide insight and intelligence into the threats that our clients face.",
+        icon: "MagnifyingGlassIcon",
         features: [
-          "Marked security vehicles",
-          "GPS tracking & reporting",
-          "Alarm response services",
-          "Property inspections",
-          "Emergency incident response",
+          "Proactive intelligence gathering & analysis",
+          "World class risk advisory & mitigation",
+          "Crisis management & response capability",
+          "Expert advice on risk management technologies",
+          "Specialist training & capacity building",
+          "Business resilience development",
         ],
-        price: "Starting at $65/hour",
-        duration: "Customizable routes",
         active: true,
         featured: true,
         order: 3,
@@ -117,114 +116,143 @@ async function main() {
     }),
     prisma.service.create({
       data: {
-        title: "Event Security",
+        title: "Escort Service",
         description:
-          "Specialized security solutions for concerts, corporate events, and private gatherings.",
-        icon: "CalendarIcon",
+          "Our escort service includes countrywide safeguarding the valuables in transit. A team of trained and vigilant personnel will ensure that your consignment has reached its destination. Our central monitoring cell continuously tracks consignment's location. Our own tracking system, with geo fencing technology assures that your consignment is maintaining predetermined route and time. Currently we are escorting more than 5500 countrywide consignments a year.",
+        icon: "TruckIcon",
         features: [
-          "Crowd control management",
-          "VIP protection services",
-          "Bag screening & metal detection",
-          "Emergency evacuation planning",
-          "Coordination with local authorities",
+          "Countrywide consignment safeguarding",
+          "Central monitoring cell tracking",
+          "Geo fencing technology",
+          "Predetermined route & time assurance",
+          "5500+ consignments escorted yearly",
+          "Trained & vigilant escort personnel",
         ],
-        price: "Custom quotes available",
-        duration: "Event-based pricing",
         active: true,
+        featured: true,
         order: 4,
       },
     }),
     prisma.service.create({
       data: {
-        title: "Executive Protection",
+        title: "Event Security Management",
         description:
-          "Discreet personal protection services for high-profile individuals and corporate executives.",
-        icon: "UserIcon",
+          "We put up special security arrangements for events. We train personnel in ensuring security at the main entry/exit gates, drop zone, receptions, parking etc. Depending on crowd and nature of event we set up temporary CCTV systems, scanners and access control systems. Special security arrangements are made for events held by corporate companies for AGM, concerts, social and private gathering, sports events, etc. Falcon® was the security partner of \"RunBangla International 10K 2020\".",
+        icon: "CalendarIcon",
         features: [
-          "Personal bodyguard services",
-          "Threat assessment & analysis",
-          "Secure transportation",
-          "Advance security planning",
-          "International protection available",
+          "Entry/exit gate security management",
+          "Temporary CCTV & scanner systems",
+          "Access control for events",
+          "Corporate AGM & concert security",
+          "Sports event security management",
+          "Security partner of RunBangla International 10K",
         ],
-        price: "Starting at $75/hour",
-        duration: "Round-the-clock available",
         active: true,
         order: 5,
       },
     }),
     prisma.service.create({
       data: {
-        title: "Corporate Security",
+        title: "Integration (PSIM)",
         description:
-          "Comprehensive security solutions tailored for corporate environments and business facilities.",
-        icon: "BuildingOfficeIcon",
+          "Our growing focus on integrated, technology-enabled solutions creates additional security and efficiency benefits to customers and increases our ability to differentiate Falcon's® offering in the security market, which in turn supports our goal of accelerating growth. We are platinum distributor partner of ISM UK in (PSIM) physical security information management. We offer state of art and scalable integration solution to our clients.",
+        icon: "CpuChipIcon",
         features: [
-          "Reception & lobby security",
-          "Employee badge management",
-          "Visitor screening protocols",
-          "After-hours security",
-          "Loss prevention services",
+          "Platinum distributor partner of ISM UK",
+          "Physical Security Information Management (PSIM)",
+          "Technology-enabled integrated solutions",
+          "State of art & scalable solutions",
+          "System integration expertise",
+          "Security & efficiency optimization",
         ],
-        price: "Starting at $28/hour",
-        duration: "Contract-based",
         active: true,
         order: 6,
       },
     }),
     prisma.service.create({
       data: {
-        title: "Retail Security",
+        title: "Digital Surveillance",
         description:
-          "Specialized loss prevention and customer safety services for retail establishments.",
-        icon: "ShoppingBagIcon",
+          "We provide wide range of digital security and surveillance equipment and maintenance services to our clients. We maintain a pool of leading brands of digital security market. Our focus is to provide the best of the solutions that befits client's security needs. Video surveillance systems, access control systems, fire detection and protection systems, perimeter intrusion detection systems, different scanning systems and also design and built systems that can be engaged to increase security efficiency.",
+        icon: "VideoCameraIcon",
         features: [
-          "Loss prevention specialists",
-          "Shoplifting deterrence",
-          "Customer assistance",
-          "Emergency response",
-          "CCTV monitoring",
+          "CCTV systems (Analogue, IP, PTZ, Thermal)",
+          "Access control systems",
+          "Fire detection & protection systems",
+          "Perimeter intrusion detection",
+          "Video analytics & video wall solutions",
+          "DVR, NVR, XVR systems",
         ],
-        price: "Starting at $25/hour",
-        duration: "Store hours coverage",
         active: true,
+        featured: true,
         order: 7,
       },
     }),
     prisma.service.create({
       data: {
-        title: "Construction Site Security",
+        title: "Video Surveillance (CCTV)",
         description:
-          "Robust security solutions for construction sites, equipment protection, and site safety.",
-        icon: "WrenchScrewdriverIcon",
+          "Falcon® stands out in the CCTV market for several reasons: We provide project consulting where our experts provide a comprehensive project assessment to determine the needs of your business. We provide free security audits using blueprints, digital photos, sketches, and online satellite imagery. For customers with complex technology or security requirements, our sales engineers have extensive expertise in security & IT technology.\n\nWe have a wide range of CCTV system solutions including analogue cameras, IP cameras, PTZ cameras, 360 degree cameras, GSM based cameras, thermal cameras, face detection cameras, DVR, NVR, XVR, video analytics and video wall solutions.",
+        icon: "EyeIcon",
         features: [
-          "Equipment theft prevention",
-          "Site access control",
-          "24/7 surveillance",
-          "Safety compliance monitoring",
-          "Vandalism prevention",
+          "Free security audit & project consulting",
+          "System integration for complex requirements",
+          "Analogue, IP, PTZ & thermal cameras",
+          "Face detection & 360 degree cameras",
+          "Video analytics & wall solutions",
+          "Comprehensive project assessment",
         ],
-        price: "Starting at $30/hour",
-        duration: "Project duration",
         active: true,
         order: 8,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        title: "Access Control",
+        description:
+          "Access control is the process of regulating who can access certain resources, such as information, files, systems, networks, or physical spaces. Access control involves the implementation of security policies and mechanisms to prevent unauthorized access and ensure that only authorized individuals or entities can access the resources they need.\n\nPhysical access control regulates who can enter a physical space, such as a building, room, or storage area. It can involve using keys, access cards, biometric identification, or other methods. Logical access control regulates who can access digital resources using passwords, security tokens, or other authentication mechanisms. Administrative access control regulates who has administrative privileges based on job responsibilities.\n\nAccess control is an essential part of any security strategy, as it helps to prevent unauthorized access and protect sensitive information and resources from theft, damage, or misuse.",
+        icon: "LockClosedIcon",
+        features: [
+          "Physical access control (keys, cards, biometric)",
+          "Logical access control (passwords, tokens)",
+          "Administrative access control & role management",
+          "Building & room access regulation",
+          "Digital resource access management",
+          "Security policy implementation",
+        ],
+        active: true,
+        featured: true,
+        order: 9,
       },
     }),
   ]);
 
   console.log("✅ Services created:", services.length);
 
-  // Create client testimonials for Falcon Security Limited
+  // =====================================================
+  // CLIENT TESTIMONIALS
+  // =====================================================
   const clients = await Promise.all([
     prisma.client.create({
       data: {
-        name: "Michael Johnson",
-        company: "Metro Corporate Plaza",
-        position: "Facilities Director",
+        name: "Multinational Corporation Client",
+        company: "International Organization",
+        position: "Security Director",
         testimonial:
-          "Falcon Security Limited has exceeded our expectations. Their armed guards are highly professional and their response times are exceptional. We feel completely secure with their services.",
-        image:
-          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+          "Falcon Security Limited has been our trusted security partner for over a decade. Their armed and manned guard services are of the highest standard, and their professionalism is unmatched in Bangladesh.",
+        rating: 5,
+        projectType: "Manned Guard Service",
+        featured: true,
+        active: true,
+      },
+    }),
+    prisma.client.create({
+      data: {
+        name: "Corporate Office Client",
+        company: "Leading Bank",
+        position: "Head of Administration",
+        testimonial:
+          "The security guards provided by Falcon® are well-trained, disciplined, and maintain the highest standards of professionalism. Their HES compliance gives us complete confidence.",
         rating: 5,
         projectType: "Corporate Security",
         featured: true,
@@ -233,58 +261,37 @@ async function main() {
     }),
     prisma.client.create({
       data: {
-        name: "Sarah Chen",
-        company: "Westfield Shopping Center",
-        position: "Security Manager",
+        name: "Industrial Client",
+        company: "Manufacturing Company",
+        position: "Operations Manager",
         testimonial:
-          "The retail security services provided by Falcon Security have significantly reduced theft and created a safer shopping environment. Their guards are courteous and professional.",
-        image:
-          "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+          "Falcon® has provided comprehensive security for our industrial premises since 2005. Their escort services for our countrywide consignments have been flawless with zero incidents.",
         rating: 5,
-        projectType: "Retail Security",
+        projectType: "Escort Service",
         featured: true,
         active: true,
       },
     }),
     prisma.client.create({
       data: {
-        name: "Robert Davis",
-        company: "City Construction Group",
-        position: "Project Manager",
+        name: "NGO Client",
+        company: "International NGO",
+        position: "Country Director",
         testimonial:
-          "Falcon Security's construction site protection has saved us thousands in equipment theft prevention. Their guards are reliable and understand the construction environment well.",
-        image:
-          "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face",
+          "The executive protection and risk consulting services from Falcon® have been invaluable for our operations in Bangladesh. Their retired military officers bring unparalleled expertise.",
         rating: 5,
-        projectType: "Construction Security",
+        projectType: "Executive Protection",
         featured: true,
         active: true,
       },
     }),
     prisma.client.create({
       data: {
-        name: "Alex Thompson",
-        company: "TechHub Innovation Center",
-        position: "Facilities Manager",
+        name: "Event Organizer",
+        company: "Events Management Company",
+        position: "Managing Director",
         testimonial:
-          "Falcon Security's mobile patrol services have greatly enhanced our multi-location security. Their detailed reporting keeps us informed at all times.",
-        image:
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-        rating: 5,
-        projectType: "Mobile Patrol",
-        featured: false,
-        active: true,
-      },
-    }),
-    prisma.client.create({
-      data: {
-        name: "Jennifer Walsh",
-        company: "Elite Events & Conferences",
-        position: "Event Director",
-        testimonial:
-          "Falcon Security's event security team is outstanding. They handle crowd control expertly while maintaining a professional and approachable demeanor with our guests.",
-        image:
-          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+          "Falcon® was the security partner for RunBangla International 10K 2020 and delivered exceptional event security management. Their crowd control and coordination were outstanding.",
         rating: 5,
         projectType: "Event Security",
         featured: true,
@@ -293,30 +300,26 @@ async function main() {
     }),
     prisma.client.create({
       data: {
-        name: "David Rodriguez",
-        company: "TechNova Industries",
-        position: "Chief Security Officer",
+        name: "Real Estate Developer",
+        company: "Construction Group",
+        position: "Project Director",
         testimonial:
-          "The executive protection services from Falcon Security are top-notch. Their discrete and professional approach gives our leadership team complete confidence.",
-        image:
-          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
+          "Falcon® provides excellent security at our construction sites with their trained guards. The digital surveillance systems they installed have enhanced our overall security posture.",
         rating: 5,
-        projectType: "Executive Protection",
+        projectType: "Construction & Digital Surveillance",
         featured: false,
         active: true,
       },
     }),
     prisma.client.create({
       data: {
-        name: "Dr. Amanda Foster",
-        company: "Central Medical Center",
-        position: "Administrator",
+        name: "Diplomatic Client",
+        company: "Foreign Embassy",
+        position: "Security Attaché",
         testimonial:
-          "Healthcare security requires special expertise, and Falcon Security delivers exactly that. Their guards understand our environment and maintain patient confidentiality.",
-        image:
-          "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
+          "Falcon® understands the unique security needs of diplomatic missions. Their personnel are discreet, professional, and well-versed in VVIP security protocols.",
         rating: 5,
-        projectType: "Healthcare Security",
+        projectType: "VVIP Security",
         featured: false,
         active: true,
       },
@@ -325,103 +328,110 @@ async function main() {
 
   console.log("✅ Clients created:", clients.length);
 
-  // Create gallery images for Falcon Security Limited
+  // =====================================================
+  // GALLERY
+  // =====================================================
   const gallery = await Promise.all([
     prisma.gallery.create({
       data: {
-        title: "Security Control Center",
+        title: "Falcon® Head Office",
         description:
-          "State-of-the-art 24/7 monitoring and surveillance command center",
+          "House # 155, Lane # 3, Eastern Road, New D.O.H.S. Mohakhali, Dhaka 1206",
         image:
-          "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop",
+          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
         category: "FACILITIES",
-        tags: ["monitoring", "surveillance", "technology"],
+        tags: ["headquarters", "dhaka", "office"],
         featured: true,
         order: 1,
       },
     }),
     prisma.gallery.create({
       data: {
-        title: "Armed Security Personnel",
-        description: "Professional armed guards providing high-level security",
+        title: "Manned Guard Service",
+        description:
+          "Professional uniformed security guards deployed at client premises",
         image:
-          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+          "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=800&h=600&fit=crop",
         category: "TEAM",
-        tags: ["armed", "security", "professional"],
+        tags: ["guards", "manned-security", "professional"],
         featured: true,
         order: 2,
       },
     }),
     prisma.gallery.create({
       data: {
-        title: "Mobile Security Patrol",
+        title: "Training Center",
         description:
-          "Falcon Security marked patrol vehicles for rapid response",
+          "Falcon® Training Center at 6715 Gaoir Madrasa, Dakkhinkhan, Dhaka",
         image:
-          "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop",
-        category: "EQUIPMENT",
-        tags: ["patrol", "mobile", "response", "vehicle"],
+          "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=800&h=600&fit=crop",
+        category: "TRAINING",
+        tags: ["training", "facility", "dakkhinkhan"],
         featured: true,
         order: 3,
       },
     }),
     prisma.gallery.create({
       data: {
-        title: "Corporate Security Team",
-        description: "Uniformed security officers for corporate environments",
+        title: "Digital Surveillance Systems",
+        description:
+          "CCTV, access control, and integrated security solutions installed by Falcon®",
         image:
-          "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=800&h=600&fit=crop",
-        category: "TEAM",
-        tags: ["corporate", "uniform", "professional"],
+          "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop",
+        category: "TECHNOLOGY",
+        tags: ["cctv", "surveillance", "digital-security"],
         featured: true,
         order: 4,
       },
     }),
     prisma.gallery.create({
       data: {
-        title: "Event Security Setup",
-        description: "Security checkpoint and crowd control at corporate event",
+        title: "Event Security Operations",
+        description:
+          "Security arrangements for corporate events, concerts, and sports events",
         image:
           "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=600&fit=crop",
         category: "SERVICES",
-        tags: ["event", "crowd-control", "checkpoint"],
+        tags: ["event", "crowd-control", "security"],
         featured: false,
         order: 5,
       },
     }),
     prisma.gallery.create({
       data: {
-        title: "Security Training Exercise",
-        description: "Ongoing professional development and tactical training",
+        title: "Executive Protection Detail",
+        description:
+          "Close protection services for VVIPs, diplomats, and high-profile individuals",
         image:
-          "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=800&h=600&fit=crop",
-        category: "TRAINING",
-        tags: ["training", "exercise", "professional-development"],
+          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+        category: "SERVICES",
+        tags: ["executive-protection", "vvip", "bodyguard"],
         featured: false,
         order: 6,
       },
     }),
     prisma.gallery.create({
       data: {
-        title: "Construction Site Security",
+        title: "Escort & Transit Security",
         description:
-          "Protecting valuable equipment and materials at construction sites",
+          "Countrywide consignment escort with GPS tracking and geo-fencing",
         image:
-          "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
+          "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop",
         category: "SERVICES",
-        tags: ["construction", "site-security", "equipment-protection"],
+        tags: ["escort", "transit", "consignment"],
         featured: false,
         order: 7,
       },
     }),
     prisma.gallery.create({
       data: {
-        title: "Retail Loss Prevention",
-        description: "Discreet security services for retail environments",
+        title: "Access Control Systems",
+        description:
+          "Biometric access control, card readers, and physical access management",
         image:
-          "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
-        category: "SERVICES",
-        tags: ["retail", "loss-prevention", "surveillance"],
+          "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
+        category: "TECHNOLOGY",
+        tags: ["access-control", "biometric", "security-systems"],
         featured: false,
         order: 8,
       },
@@ -430,12 +440,14 @@ async function main() {
 
   console.log("✅ Gallery items created:", gallery.length);
 
-  // Create company settings for Falcon Security Limited
+  // =====================================================
+  // COMPANY SETTINGS - Real Falcon® details
+  // =====================================================
   const settings = await Promise.all([
     prisma.settings.create({
       data: {
         key: "company_name",
-        value: "Falcon Security Limited",
+        value: "Falcon® Security Limited",
         type: "text",
         description: "Company name",
       },
@@ -443,7 +455,7 @@ async function main() {
     prisma.settings.create({
       data: {
         key: "company_tagline",
-        value: "Professional Security Solutions You Can Trust",
+        value: "Your Security is Our Priority",
         type: "text",
         description: "Company tagline",
       },
@@ -452,7 +464,7 @@ async function main() {
       data: {
         key: "company_description",
         value:
-          "Falcon Security Limited is a premier security services company providing comprehensive protection solutions across corporate, retail, construction, and event sectors. With highly trained personnel and state-of-the-art technology, we deliver unmatched security services tailored to your specific needs.",
+          "Falcon® Security Limited is a security, planning, management and service company enjoying the confidence of our clientele. Retired officers of the Bangladesh Army having adequate training on security and related matters, both from home and abroad, among others manage the services of the company. Our experience includes VVIP security, protection planning of key point installation (KPI), aviation security, planning and securing big industrial projects from its inception till operation.",
         type: "textarea",
         description: "Company description",
       },
@@ -460,7 +472,7 @@ async function main() {
     prisma.settings.create({
       data: {
         key: "contact_phone",
-        value: "+1 (555) 123-SECURITY",
+        value: "+8801618325266",
         type: "text",
         description: "Primary contact phone",
       },
@@ -468,26 +480,34 @@ async function main() {
     prisma.settings.create({
       data: {
         key: "contact_email",
-        value: "info@falconsecurity.com",
+        value: "info@falconslimited.com",
         type: "text",
         description: "Primary contact email",
       },
     }),
     prisma.settings.create({
       data: {
+        key: "secondary_email",
+        value: "falconslimited@gmail.com",
+        type: "text",
+        description: "Secondary contact email",
+      },
+    }),
+    prisma.settings.create({
+      data: {
         key: "office_address",
         value:
-          "1234 Security Boulevard, Suite 500, Business District, NY 10001",
+          "House # 155, Lane # 3, Eastern Road, New D.O.H.S. Mohakhali, Dhaka 1206, Bangladesh",
         type: "text",
-        description: "Office address",
+        description: "Head office address",
       },
     }),
     prisma.settings.create({
       data: {
         key: "years_experience",
-        value: "15",
+        value: "33",
         type: "number",
-        description: "Years of experience",
+        description: "Years of experience (since 1993)",
       },
     }),
     prisma.settings.create({
@@ -498,16 +518,27 @@ async function main() {
         description: "Number of clients served",
       },
     }),
+    prisma.settings.create({
+      data: {
+        key: "founded_year",
+        value: "1993",
+        type: "number",
+        description: "Year company was founded",
+      },
+    }),
   ]);
 
   console.log("✅ Settings created:", settings.length);
 
-  // Create banners for homepage
+  // =====================================================
+  // BANNERS
+  // =====================================================
   const banners = await Promise.all([
     prisma.banner.create({
       data: {
-        title: "Professional Security Solutions",
-        subtitle: "Protecting what matters most with 15+ years of expertise",
+        title: "Falcon® Security Limited",
+        subtitle:
+          "A security, planning, management and service company since 1993. Your security is our priority.",
         image:
           "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=700&fit=crop&crop=center",
         buttonText: "Our Services",
@@ -518,8 +549,9 @@ async function main() {
     }),
     prisma.banner.create({
       data: {
-        title: "24/7 Armed & Unarmed Security",
-        subtitle: "Licensed professionals ready to protect your business",
+        title: "Professional Security Solutions",
+        subtitle:
+          "VVIP security, manned guarding, digital surveillance & risk consulting by retired Bangladesh Army officers",
         image:
           "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=700&fit=crop&crop=center",
         buttonText: "Contact Us",
@@ -530,12 +562,13 @@ async function main() {
     }),
     prisma.banner.create({
       data: {
-        title: "Trusted by 500+ Businesses",
-        subtitle: "From retail stores to corporate offices - we secure it all",
+        title: "Three Decades of Trust & Excellence",
+        subtitle:
+          "Operational since 1993 with nationwide coverage — ISO 9001:2015, 18788:2015 & 27001:2013 certified",
         image:
           "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=1920&h=700&fit=crop&crop=center",
-        buttonText: "View Gallery",
-        buttonUrl: "/gallery",
+        buttonText: "About Us",
+        buttonUrl: "/about",
         order: 3,
         active: true,
       },
@@ -544,7 +577,9 @@ async function main() {
 
   console.log("✅ Banners created:", banners.length);
 
-  // Create social media links
+  // =====================================================
+  // SOCIAL LINKS
+  // =====================================================
   const socialLinks = await Promise.all([
     prisma.socialLink.create({
       data: {
@@ -586,96 +621,104 @@ async function main() {
 
   console.log("✅ Social links created:", socialLinks.length);
 
-  // Create about section
+  // =====================================================
+  // ABOUT SECTION - Real company history & info
+  // =====================================================
   const about = await prisma.about.create({
     data: {
-      title: "About Falcon Security Limited",
-      subtitle: "Your Trusted Security Partner Since 2009",
+      title: "About Falcon® Security Limited",
+      subtitle: "Your Trusted Security Partner Since 1993",
       description:
-        "Falcon Security Limited has been at the forefront of the security industry for over 15 years, providing comprehensive protection solutions to businesses and individuals across the region. Our team of highly trained, licensed professionals brings unmatched expertise in armed and unarmed security services, mobile patrol, executive protection, and specialized event security.\n\nWe understand that every client has unique security needs. That's why we work closely with you to develop customized security plans that address your specific challenges and concerns. From corporate offices and retail establishments to construction sites and special events, we deliver reliable, professional security services you can trust.\n\nOur commitment to excellence is reflected in our rigorous hiring standards, ongoing training programs, and state-of-the-art equipment. We maintain the highest industry certifications and continuously invest in technology and training to stay ahead of emerging security threats.",
+        "Falcon® Security Limited is a security, planning, management, and services company enjoying the confidence of our clientele. Retired officers from the Bangladesh Army having adequate training on security and related matters, both from home and abroad, among others, manage the services of the company. Our experience includes VVIP security, protection planning of key point installation (KPI), aviation security, planning, and securing big industrial projects from its inception till operation and providing security and other essential services to expatriate/local companies, offices, factories, residential complexes, and other installations.\n\nFalcon Security was set up as a Proprietorship Company under the management of the present Managing Director in 1993. The company was later registered in 1997 with the registrar of joint-stock companies and firms, Government of Bangladesh as a private limited company. Falcon® logo and name have received the trademark registration from the concerned registrar of the government.\n\nFalcon® Security Limited is the founder member of the Bangladesh Professional Security Service Provider's Association (BPSSPA). The company has been awarded ISO 9001:2015, 18788:2015 & 27001:2013 for practicing international standards in quality management, private security management, and information security management.\n\nBeside conventional guarding service, Falcon® also provides digital surveillance solutions by installing and maintaining CCTV systems, Access Control Systems, Scanning Systems, intrusion detection systems, guard tour management systems and different tracking systems. We are the platinum distributor-partner of ISM UK in integration (PSIM).\n\nOur Policy: The company policy is to provide concentrated and quality services without overstretching our supervisory system. By this, we ensure strict supervision round the clock to maintain the high standard of performance set by us.\n\nFounder's Message: Everything we hold near and dear needs to be protected and cared for. But finding someone worthy enough to ensure the security of the fruits of our hard work, and indeed our very lives and properties, can be difficult. That's where Falcon® comes in.",
       image:
         "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
-      yearsExp: 15,
-      projectsDone: 1200,
+      yearsExp: 33,
+      projectsDone: 5500,
       clientsServed: 500,
       awards: [
-        "Best Security Company 2023 - Business Excellence Awards",
-        "Outstanding Service Award 2022 - Security Industry Association",
-        "Safety Excellence Recognition 2021 - Chamber of Commerce",
-        "Customer Service Excellence 2020 - Regional Business Council",
+        "ISO 9001:2015 - Quality Management System",
+        "ISO 18788:2015 - Private Security Operations Management",
+        "ISO 27001:2013 - Information Security Management",
+        "Founder Member - Bangladesh Professional Security Service Provider's Association (BPSSPA)",
+        "Platinum Distributor Partner - ISM UK (PSIM)",
+        "Trademark Registered - Government of Bangladesh",
       ],
     },
   });
 
   console.log("✅ About section created");
 
-  // Create sample blog posts
+  // =====================================================
+  // BLOG POSTS - Security industry content
+  // =====================================================
   const blogs = await Promise.all([
     prisma.blog.create({
       data: {
-        title: "10 Essential Security Tips for Businesses",
-        slug: "10-essential-security-tips-for-businesses",
+        title: "Why Professional Security is Essential for Businesses in Bangladesh",
+        slug: "professional-security-essential-businesses-bangladesh",
         content:
-          "In today's rapidly evolving threat landscape, businesses must stay vigilant about security. Here are 10 essential security tips every business should implement...",
+          "In today's dynamic business environment in Bangladesh, professional security services have become indispensable. With over three decades of experience, Falcon® Security Limited understands the unique security challenges faced by businesses operating in the country.\n\nFrom multinational corporations to local enterprises, the need for trained, professional security personnel has never been greater. Falcon® provides comprehensive manned guarding services with guards who are fully compliant with Health Environment Safety (HES) standards.\n\nOur approach focuses on providing concentrated and quality services without overstretching our supervisory system, ensuring strict supervision round the clock to maintain the high standard of performance we have set. Whether you need security for industrial premises, corporate buildings, banks, NGOs, or construction sites, Falcon® has the expertise and manpower to deliver.",
         excerpt:
-          "Essential security measures every business owner should know to protect their assets, employees, and customers.",
+          "Understanding why professional security services are essential for businesses in Bangladesh and how Falcon® Security Limited delivers comprehensive protection.",
         coverImage:
           "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop",
         published: true,
-        tags: ["security-tips", "business-security", "prevention"],
+        tags: ["security", "bangladesh", "business-security", "professional-guards"],
       },
     }),
     prisma.blog.create({
       data: {
-        title: "The Importance of Mobile Security Patrols",
-        slug: "importance-of-mobile-security-patrols",
+        title: "The Evolution of Digital Surveillance in Security Management",
+        slug: "evolution-digital-surveillance-security-management",
         content:
-          "Mobile security patrols offer a dynamic and cost-effective security solution for businesses with multiple locations or large properties...",
+          "Digital surveillance has transformed the security landscape in Bangladesh. Falcon® Security Limited has been at the forefront of this transformation, offering cutting-edge CCTV systems, access control solutions, and integrated security platforms.\n\nAs the platinum distributor partner of ISM UK in Physical Security Information Management (PSIM), Falcon® brings world-class integration solutions to the Bangladesh market. Our range includes analogue cameras, IP cameras, PTZ cameras, thermal cameras, face detection cameras, and comprehensive video analytics.\n\nOur free security audit service allows clients to benefit from a comprehensive assessment using blueprints, digital photos, sketches, and satellite imagery. This ensures that every surveillance system we design is tailored to the specific needs of the client.",
         excerpt:
-          "Learn how mobile security patrols can enhance your property protection while providing cost-effective coverage.",
+          "How digital surveillance technology is revolutionizing security management and Falcon® Security's role as a leading provider of integrated solutions in Bangladesh.",
         coverImage:
-          "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=400&fit=crop",
+          "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=400&fit=crop",
         published: true,
-        tags: ["mobile-patrol", "security-solutions", "property-protection"],
+        tags: ["digital-surveillance", "cctv", "psim", "technology"],
       },
     }),
     prisma.blog.create({
       data: {
-        title: "Event Security: Planning for Success",
-        slug: "event-security-planning-for-success",
+        title: "Event Security: Lessons from RunBangla International 10K 2020",
+        slug: "event-security-lessons-runbangla-10k",
         content:
-          "Successful events require comprehensive security planning. From risk assessment to crowd management, here's what you need to know...",
+          "Event security requires meticulous planning, coordination, and execution. As the official security partner of RunBangla International 10K 2020, Falcon® Security Limited gained invaluable experience in managing large-scale event security.\n\nOur event security management covers every aspect — from entry/exit gate security and drop zones to reception areas and parking management. Depending on the crowd size and nature of the event, we deploy temporary CCTV systems, scanners, and access control systems.\n\nFor corporate events such as AGMs, concerts, social gatherings, and sports events, our trained personnel ensure the safety of all attendees while maintaining a seamless event experience. Our ability to handle unorthodox situations with ease and professionalism has made us the preferred security partner for major events across Bangladesh.",
         excerpt:
-          "A comprehensive guide to planning security for events of all sizes, from corporate meetings to large gatherings.",
+          "Insights into managing large-scale event security and Falcon® Security's experience as the security partner of RunBangla International 10K 2020.",
         coverImage:
           "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=400&fit=crop",
         published: true,
-        tags: ["event-security", "crowd-control", "event-planning"],
+        tags: ["event-security", "runbangla", "crowd-management", "sports-events"],
       },
     }),
   ]);
 
   console.log("✅ Blog posts created:", blogs.length);
 
-  // Create career opportunities
+  // =====================================================
+  // CAREERS
+  // =====================================================
   const careers = await Promise.all([
     prisma.career.create({
       data: {
-        title: "Armed Security Officer",
+        title: "Security Guard",
         description:
-          "We are seeking experienced armed security officers to join our elite protection team. Candidates must be licensed, professional, and committed to excellence in security services.",
+          "Falcon® Security Limited is seeking disciplined and professional security guards for deployment at various client premises across Bangladesh including corporate buildings, industrial sites, banks, and residential complexes.",
         requirements: [
-          "Valid armed security license",
-          "Minimum 3 years security experience",
-          "Clean criminal background check",
-          "Excellent communication skills",
-          "Physical fitness requirements",
-          "Professional appearance and demeanor",
-          "Ability to work various shifts including weekends",
+          "Minimum HSC or equivalent education",
+          "Good physical fitness",
+          "Clean background record",
+          "Previous security experience preferred",
+          "Willingness to work 8-hour shifts",
+          "Good communication skills in Bangla",
+          "Discipline and professional demeanor",
         ],
-        location: "New York, NY",
+        location: "Dhaka, Bangladesh (Nationwide deployment)",
         type: "full-time",
-        salary: "$45,000 - $55,000 annually",
+        salary: "Competitive salary with benefits",
         deadline: new Date("2026-12-31"),
         active: true,
         featured: true,
@@ -683,21 +726,21 @@ async function main() {
     }),
     prisma.career.create({
       data: {
-        title: "Mobile Patrol Supervisor",
+        title: "Security Supervisor",
         description:
-          "Lead our mobile patrol division and oversee security operations across multiple client locations. This role requires strong leadership skills and extensive security experience.",
+          "We are looking for experienced security supervisors to lead guard teams at client sites. The ideal candidate has prior military or security force experience and strong leadership capabilities.",
         requirements: [
-          "Valid driver's license with clean record",
-          "Security supervisor license",
-          "Minimum 5 years security experience",
-          "2+ years supervisory experience",
-          "Knowledge of security protocols",
-          "GPS and technology proficiency",
+          "Minimum graduation or equivalent",
+          "5+ years of security experience",
+          "Previous supervisory experience required",
+          "Ex-military or law enforcement preferred",
           "Strong leadership and communication skills",
+          "Knowledge of HES standards",
+          "Ability to manage teams and handle emergencies",
         ],
-        location: "New York, NY",
+        location: "Dhaka, Bangladesh",
         type: "full-time",
-        salary: "$55,000 - $65,000 annually",
+        salary: "Attractive package based on experience",
         deadline: new Date("2026-11-30"),
         active: true,
         featured: true,
@@ -705,21 +748,21 @@ async function main() {
     }),
     prisma.career.create({
       data: {
-        title: "Corporate Security Specialist",
+        title: "Digital Surveillance Technician",
         description:
-          "Join our corporate security team providing protection services to high-profile business clients. Ideal for professionals seeking a prestigious security role.",
+          "Falcon® Security Limited is hiring surveillance technicians to install, maintain and troubleshoot CCTV systems, access control systems, and other digital security equipment at client sites across Bangladesh.",
         requirements: [
-          "Security officer license",
-          "Corporate security experience preferred",
-          "Professional business attire",
-          "Excellent customer service skills",
-          "Technology savvy",
-          "Flexible scheduling availability",
-          "Bilingual (English/Spanish) preferred",
+          "Diploma/BSc in EEE, CSE, or related field",
+          "Experience with CCTV installation and maintenance",
+          "Knowledge of IP cameras, DVR/NVR systems",
+          "Access control system expertise",
+          "Troubleshooting and problem-solving skills",
+          "Valid driving license preferred",
+          "Willingness to travel nationwide",
         ],
-        location: "Manhattan, NY",
+        location: "Dhaka, Bangladesh",
         type: "full-time",
-        salary: "$40,000 - $50,000 annually",
+        salary: "Competitive salary based on experience",
         deadline: new Date("2026-12-15"),
         active: true,
         featured: false,
@@ -729,81 +772,83 @@ async function main() {
 
   console.log("✅ Career opportunities created:", careers.length);
 
-  // Create security-related projects/case studies
+  // =====================================================
+  // PROJECTS / CASE STUDIES
+  // =====================================================
   const projects = await Promise.all([
     prisma.project.create({
       data: {
-        title: "Metro Corporate Plaza Security Upgrade",
+        title: "Countrywide Consignment Escort Operations",
         description:
-          "Comprehensive security system upgrade for a 40-story corporate building including access control, surveillance, and 24/7 armed guard services. Reduced security incidents by 85% within the first year.",
+          "Falcon® provides escort services for over 5,500 countrywide consignments per year. Our central monitoring cell continuously tracks each consignment's location using our proprietary tracking system with geo-fencing technology to ensure predetermined routes and timing are maintained.",
+        image:
+          "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop",
+        category: "Escort Service",
+        technologies: [
+          "GPS Tracking",
+          "Geo-fencing Technology",
+          "Central Monitoring",
+          "Route Management",
+        ],
+        githubUrl: null,
+        liveUrl: null,
+        featured: true,
+        userId: user.id,
+      },
+    }),
+    prisma.project.create({
+      data: {
+        title: "RunBangla International 10K 2020 - Event Security",
+        description:
+          "Falcon® was the official security partner of RunBangla International 10K 2020, managing comprehensive event security including entry/exit gate security, crowd control, temporary CCTV systems, scanner deployment, and access control for thousands of participants.",
+        image:
+          "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=600&fit=crop",
+        category: "Event Security",
+        technologies: [
+          "Crowd Control",
+          "Temporary CCTV",
+          "Access Control",
+          "Event Coordination",
+        ],
+        githubUrl: null,
+        liveUrl: null,
+        featured: true,
+        userId: user.id,
+      },
+    }),
+    prisma.project.create({
+      data: {
+        title: "PSIM Integration Solutions - ISM UK Partnership",
+        description:
+          "As the platinum distributor partner of ISM UK, Falcon® has implemented Physical Security Information Management (PSIM) integration solutions for major clients, bringing together CCTV, access control, fire detection, and intrusion detection into unified management platforms.",
+        image:
+          "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop",
+        category: "Integration",
+        technologies: [
+          "PSIM",
+          "System Integration",
+          "ISM UK Platform",
+          "Multi-system Management",
+        ],
+        githubUrl: null,
+        liveUrl: null,
+        featured: true,
+        userId: user.id,
+      },
+    }),
+    prisma.project.create({
+      data: {
+        title: "Industrial Complex Security - Full Service Package",
+        description:
+          "Comprehensive security deployment for major industrial complexes including manned guarding, digital surveillance installation, access control systems, perimeter intrusion detection, and auxiliary services such as maintenance staff and drivers.",
         image:
           "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
-        category: "Corporate Security",
+        category: "Manned Guard & Surveillance",
         technologies: [
-          "Access Control Systems",
-          "CCTV Surveillance",
-          "Armed Security",
-          "Visitor Management",
-        ],
-        githubUrl: null,
-        liveUrl: null,
-        featured: true,
-        userId: user.id,
-      },
-    }),
-    prisma.project.create({
-      data: {
-        title: "Westfield Shopping Center Loss Prevention",
-        description:
-          "Implemented comprehensive loss prevention program including undercover security, surveillance monitoring, and theft deterrence strategies. Achieved 60% reduction in retail theft.",
-        image:
-          "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
-        category: "Retail Security",
-        technologies: [
-          "Loss Prevention",
-          "Undercover Security",
-          "Retail Surveillance",
-          "Theft Deterrence",
-        ],
-        githubUrl: null,
-        liveUrl: null,
-        featured: true,
-        userId: user.id,
-      },
-    }),
-    prisma.project.create({
-      data: {
-        title: "Construction Site Protection Program",
-        description:
-          "Developed and executed security program for major construction project protecting $50M+ in equipment and materials. Zero theft incidents over 18-month project duration.",
-        image:
-          "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
-        category: "Construction Security",
-        technologies: [
-          "Site Security",
-          "Equipment Protection",
+          "Manned Guarding",
+          "CCTV Installation",
           "Access Control",
-          "24/7 Monitoring",
-        ],
-        githubUrl: null,
-        liveUrl: null,
-        featured: true,
-        userId: user.id,
-      },
-    }),
-    prisma.project.create({
-      data: {
-        title: "Executive Protection Services",
-        description:
-          "Provided discrete executive protection for Fortune 500 CEO including risk assessment, secure transportation, and event security coordination.",
-        image:
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-        category: "Executive Protection",
-        technologies: [
-          "Executive Protection",
-          "Risk Assessment",
-          "Secure Transportation",
-          "Event Coordination",
+          "Perimeter Security",
         ],
         githubUrl: null,
         liveUrl: null,
@@ -815,35 +860,40 @@ async function main() {
 
   console.log("✅ Security projects created:", projects.length);
 
-  // Create sample contacts/inquiries
+  // =====================================================
+  // CONTACT INQUIRIES (sample)
+  // =====================================================
   const contacts = await Promise.all([
     prisma.contact.create({
       data: {
-        name: "John Mitchell",
-        email: "j.mitchell@techcorp.com",
+        name: "Rezaul Karim",
+        email: "rezaul@example.com",
+        phone: "+8801712345678",
         message:
-          "We need armed security services for our corporate headquarters. Please provide a quote for 24/7 coverage.",
-        status: "in-progress",
+          "We need manned guard services for our garment factory in Gazipur. Please provide a quote for 24/7 coverage with 12 guards.",
+        status: "new",
         userId: user.id,
       },
     }),
     prisma.contact.create({
       data: {
-        name: "Sandra Williams",
-        email: "sandra@retailchain.com",
+        name: "Sarah Ahmed",
+        email: "sarah@ngo-bd.org",
+        phone: "+8801898765432",
         message:
-          "Interested in loss prevention services for our retail locations. Can you provide information about your retail security packages?",
-        status: "responded",
+          "Our international NGO requires executive protection for visiting delegates. We also need risk consulting for our field operations in rural Bangladesh.",
+        status: "new",
         userId: user.id,
       },
     }),
     prisma.contact.create({
       data: {
-        name: "David Construction LLC",
-        email: "info@davidconstruction.com",
+        name: "Mohammad Rahman",
+        email: "rahman@construction-bd.com",
+        phone: "+8801556789012",
         message:
-          "We need security for our construction sites. Equipment theft has been a problem. What solutions do you offer?",
-        status: "responded",
+          "We need CCTV installation and security guard services for our new construction project in Chittagong. Please share your pricing for digital surveillance systems.",
+        status: "new",
         userId: user.id,
       },
     }),
@@ -851,14 +901,15 @@ async function main() {
 
   console.log("✅ Contact inquiries created:", contacts.length);
 
-  // Create FAQ entries
+  // =====================================================
+  // FAQ ENTRIES - Real company FAQs
+  // =====================================================
   const faqs = await Promise.all([
     prisma.fAQ.create({
       data: {
-        question:
-          "What types of security services does Falcon Security Limited offer?",
+        question: "What services does Falcon® Security Limited offer?",
         answer:
-          "We provide comprehensive security solutions including armed and unarmed security guards, mobile patrol services, executive protection, event security, corporate security, retail loss prevention, and construction site security.",
+          "Falcon® provides comprehensive security solutions including executive protection, manned guard services, risk consulting, escort services, event security management, digital surveillance (CCTV, access control), PSIM integration solutions, and auxiliary services such as receptionists, drivers, and maintenance staff.",
         category: "Services",
         order: 1,
         active: true,
@@ -866,49 +917,49 @@ async function main() {
     }),
     prisma.fAQ.create({
       data: {
-        question: "Are your security guards licensed and insured?",
+        question: "How long has Falcon® been in operation?",
         answer:
-          "Yes, all our security personnel are fully licensed, bonded, and insured. We maintain comprehensive liability insurance and ensure all guards meet state licensing requirements.",
-        category: "Licensing",
+          "Falcon® Security Limited has been operational since 1993 — over three decades of professional security service. The company was set up as a Proprietorship Company in 1993 and was registered as a private limited company in 1997 with the Government of Bangladesh.",
+        category: "Company",
         order: 2,
         active: true,
       },
     }),
     prisma.fAQ.create({
       data: {
-        question: "Do you provide 24/7 security services?",
+        question: "Who manages Falcon® Security Limited?",
         answer:
-          "Absolutely. Falcon Security Limited operates 24/7, 365 days a year. We can provide round-the-clock coverage for all your security needs.",
-        category: "Availability",
+          "Falcon® is headed by a Management Team composed of retired officers of the Bangladesh Armed Forces who are highly trained, competent, dedicated, professional, and efficient. The team is led by Mrs. Mayeeda Choudhury (Chairperson) and Major Zulfiqar H. Choudhury (Retd) as Managing Director.",
+        category: "Management",
         order: 3,
         active: true,
       },
     }),
     prisma.fAQ.create({
       data: {
-        question: "How quickly can you deploy security personnel?",
+        question: "Does Falcon® operate nationwide?",
         answer:
-          "We can typically deploy security personnel within 24-48 hours for most assignments. For emergency situations, we offer same-day deployment when available.",
-        category: "Response Time",
+          "Yes, Falcon® has a nationwide operation with regional offices and branches across Bangladesh including Dhaka (Head Office), Chittagong, Khulna, Bogra, Kushtia, Sylhet, and Barishal. Our training center is located at Dakkhinkhan, Dhaka.",
+        category: "Coverage",
         order: 4,
         active: true,
       },
     }),
     prisma.fAQ.create({
       data: {
-        question: "What areas do you serve?",
+        question: "What certifications does Falcon® hold?",
         answer:
-          "We primarily serve the New York metropolitan area including Manhattan, Brooklyn, Queens, Bronx, and surrounding counties. Contact us for coverage in other areas.",
-        category: "Coverage",
+          "Falcon® Security Limited has been awarded ISO 9001:2015 (Quality Management), ISO 18788:2015 (Private Security Operations Management), and ISO 27001:2013 (Information Security Management). We are also the founder member of BPSSPA and platinum distributor partner of ISM UK.",
+        category: "Certifications",
         order: 5,
         active: true,
       },
     }),
     prisma.fAQ.create({
       data: {
-        question: "Do you provide security equipment and technology?",
+        question: "Does Falcon® provide digital surveillance solutions?",
         answer:
-          "Yes, we provide state-of-the-art security equipment including surveillance cameras, access control systems, alarm systems, and mobile patrol vehicles equipped with GPS tracking.",
+          "Yes, Falcon® provides a wide range of digital security and surveillance equipment and maintenance services including CCTV systems (analogue, IP, PTZ, thermal, face detection cameras), access control systems, fire detection systems, perimeter intrusion detection, video analytics, and video wall solutions. We also offer free security audits and project consulting.",
         category: "Technology",
         order: 6,
         active: true,
@@ -918,40 +969,42 @@ async function main() {
 
   console.log("✅ FAQ entries created:", faqs.length);
 
-  // Create newsletter subscribers
+  // =====================================================
+  // NEWSLETTER SUBSCRIBERS (sample)
+  // =====================================================
   const newsletters = await Promise.all([
     prisma.newsletter.create({
       data: {
-        email: "businessowner@example.com",
-        name: "Mike Johnson",
+        email: "karim@garments-bd.com",
+        name: "Abdul Karim",
         active: true,
       },
     }),
     prisma.newsletter.create({
       data: {
-        email: "security.manager@corp.com",
-        name: "Lisa Chen",
+        email: "facilities@bank-bd.com",
+        name: "Nasir Uddin",
         active: true,
       },
     }),
     prisma.newsletter.create({
       data: {
-        email: "facilities@shopping-center.com",
-        name: "Robert Davis",
+        email: "admin@ngo-dhaka.org",
+        name: "Fatima Begum",
         active: true,
       },
     }),
     prisma.newsletter.create({
       data: {
-        email: "info@construction-company.com",
-        name: "Jennifer Walsh",
+        email: "ops@construction-ctg.com",
+        name: "Rafiq Ahmed",
         active: true,
       },
     }),
     prisma.newsletter.create({
       data: {
-        email: "admin@medical-center.com",
-        name: "Dr. Amanda Foster",
+        email: "security@embassy-dhaka.org",
+        name: "James Wilson",
         active: true,
       },
     }),
@@ -959,93 +1012,97 @@ async function main() {
 
   console.log("✅ Newsletter subscribers created:", newsletters.length);
 
-  // Create job postings (additional to careers)
+  // =====================================================
+  // JOB POSTINGS
+  // =====================================================
   const jobs = await Promise.all([
     prisma.job.create({
       data: {
-        title: "Event Security Coordinator",
+        title: "Security Guard - Corporate Division",
         description:
-          "Coordinate security operations for concerts, corporate events, and private gatherings. Manage security teams and ensure safe event execution.",
+          "Falcon® Security Limited is recruiting security guards for deployment at corporate offices, banks, and multinational organizations in Dhaka. Guards will be trained at our Dakkhinkhan training facility before deployment.",
         shortDesc:
-          "Lead event security operations and coordinate with teams for safe event execution.",
-        company: "Falcon Security Limited",
-        location: "New York, NY",
+          "Professional security guards for corporate premises in Dhaka.",
+        company: "Falcon® Security Limited",
+        location: "Dhaka, Bangladesh",
         jobType: "full-time",
-        experienceLevel: "mid-level",
-        salary: "$50,000 - $60,000",
+        experienceLevel: "entry-level",
+        salary: "Competitive with industry standards",
         requirements: [
-          "Event security experience",
-          "Team leadership skills",
-          "Crowd control knowledge",
-          "Emergency response training",
-          "Excellent communication",
-          "Weekend availability",
+          "Minimum HSC education",
+          "Good physical fitness",
+          "Clean background",
+          "Discipline and professionalism",
+          "Willingness to work in shifts",
+          "Bangla communication skills",
         ],
         benefits: [
-          "Health insurance",
-          "Paid time off",
-          "Training opportunities",
-          "Career advancement",
-          "Overtime pay",
-          "401k plan",
+          "Training at Falcon® facility",
+          "Uniform provided",
+          "Festival bonuses",
+          "Career advancement opportunities",
+          "Health Environment Safety training",
         ],
         skills: [
-          "Event Management",
-          "Team Leadership",
-          "Crowd Control",
-          "Emergency Response",
+          "Physical Fitness",
+          "Communication",
+          "Discipline",
+          "Vigilance",
         ],
         remote: false,
         urgent: false,
         active: true,
-        applicationDeadline: new Date("2026-12-20"),
+        applicationDeadline: new Date("2026-12-31"),
       },
     }),
     prisma.job.create({
       data: {
-        title: "Loss Prevention Specialist",
+        title: "CCTV & Surveillance Engineer",
         description:
-          "Prevent theft and reduce shrinkage in retail environments. Work undercover and coordinate with store management to implement loss prevention strategies.",
+          "We are looking for experienced engineers to join our digital surveillance solutions division. The role involves designing, installing, and maintaining CCTV systems, access control systems, and integrated security solutions for clients across Bangladesh.",
         shortDesc:
-          "Prevent retail theft through surveillance and loss prevention techniques.",
-        company: "Falcon Security Limited",
-        location: "Brooklyn, NY",
+          "Engineer for CCTV installation and digital surveillance solutions.",
+        company: "Falcon® Security Limited",
+        location: "Dhaka, Bangladesh (Travel required)",
         jobType: "full-time",
-        experienceLevel: "entry-level",
-        salary: "$35,000 - $42,000",
+        experienceLevel: "mid-level",
+        salary: "Based on experience and qualifications",
         requirements: [
-          "Retail experience preferred",
-          "Observational skills",
-          "Report writing abilities",
-          "Professional appearance",
-          "Flexible schedule",
-          "Loss prevention training",
+          "BSc in EEE or related field",
+          "2+ years experience with CCTV systems",
+          "Knowledge of IP, analogue, PTZ cameras",
+          "DVR/NVR configuration expertise",
+          "Access control system experience",
+          "Troubleshooting skills",
         ],
         benefits: [
-          "Health insurance",
-          "Paid training",
-          "Career growth",
-          "Performance bonuses",
-          "Flexible hours",
+          "Competitive salary",
+          "Professional development",
+          "Work with leading security brands",
+          "Travel allowance",
+          "Festival bonuses",
         ],
         skills: [
-          "Loss Prevention",
-          "Surveillance",
-          "Report Writing",
-          "Retail Knowledge",
+          "CCTV Installation",
+          "Network Configuration",
+          "Access Control",
+          "Troubleshooting",
         ],
         remote: false,
         urgent: true,
         active: true,
-        applicationDeadline: new Date("2026-11-25"),
+        applicationDeadline: new Date("2026-11-30"),
       },
     }),
   ]);
 
   console.log("✅ Job postings created:", jobs.length);
 
+  // =====================================================
+  // SUMMARY
+  // =====================================================
   console.log(
-    "\n🎉 Database successfully seeded with comprehensive Falcon Security Limited data!",
+    "\n🎉 Database successfully seeded with real Falcon® Security Limited data!",
   );
   console.log("📊 Data Summary:");
   console.log(`   • Services: ${services.length}`);
@@ -1061,8 +1118,12 @@ async function main() {
   console.log(`   • FAQ Entries: ${faqs.length}`);
   console.log(`   • Newsletter Subscribers: ${newsletters.length}`);
   console.log(`   • Job Postings: ${jobs.length}`);
-  console.log("\n📧 Admin login: admin@falconsecurity.com");
+  console.log("\n📧 Admin login: admin@falconslimited.com");
   console.log("🔑 Password: admin123");
+  console.log("\n🏢 Company: Falcon® Security Limited");
+  console.log("📍 HQ: House # 155, Lane # 3, Eastern Road, New D.O.H.S. Mohakhali, Dhaka 1206");
+  console.log("📞 Phone: +8801618325266");
+  console.log("📧 Email: info@falconslimited.com");
 }
 
 main()
