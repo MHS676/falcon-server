@@ -54,11 +54,30 @@ export class UploadService {
       const isDocument = file.originalname.match(/\.(pdf|doc|docx)$/i);
 
       if (this.useCloudinary) {
-        return await this.uploadToCloudinary(
-          file,
-          folder,
-          isDocument ? "raw" : "auto",
-        );
+        try {
+          return await this.uploadToCloudinary(
+            file,
+            folder,
+            isDocument ? "raw" : "auto",
+          );
+        } catch (cloudErr: any) {
+          // If it's an auth / signature error, fall back to local storage
+          // instead of returning a 400 to the client
+          const msg: string = cloudErr?.message || '';
+          const isAuthError =
+            cloudErr?.http_code === 401 ||
+            /signature|invalid|unauthorized|api_secret/i.test(msg);
+
+          if (isAuthError) {
+            console.warn(
+              '⚠️  Cloudinary auth failed, falling back to local storage:',
+              msg,
+            );
+            return await this.uploadToLocalStorage(file, folder);
+          }
+          // Re-throw other Cloudinary errors as BadRequestException
+          throw cloudErr;
+        }
       }
       // Fallback to local file storage
       return await this.uploadToLocalStorage(file, folder);
@@ -120,11 +139,12 @@ export class UploadService {
           (error, result: UploadApiResponse | undefined) => {
             if (error) {
               console.error("❌ Cloudinary upload error:", error);
-              reject(
-                new BadRequestException(
-                  `Cloudinary upload failed: ${error.message}`,
-                ),
+              // Preserve http_code so callers can detect auth errors
+              const err: any = new BadRequestException(
+                `Cloudinary upload failed: ${error.message}`,
               );
+              err.http_code = (error as any).http_code;
+              reject(err);
             } else if (result) {
               console.log(
                 `✅ Cloudinary upload successful: ${result.secure_url}`,
@@ -143,9 +163,11 @@ export class UploadService {
       });
     } catch (error) {
       console.error("❌ Cloudinary upload error:", error);
-      throw new BadRequestException(
+      const err: any = new BadRequestException(
         `Cloudinary upload failed: ${(error as Error).message}`,
       );
+      err.http_code = (error as any).http_code;
+      throw err;
     }
   }
 
