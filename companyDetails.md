@@ -281,7 +281,7 @@ Executive Director
 Major Kazi Ashfaq (Retd)
 Director Marketing
  
-Major Asif Chowdhury (Retd)
+
 MBA, MBCHRS
 Director Business Development
  
