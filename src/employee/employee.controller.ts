@@ -10,58 +10,39 @@ import {
   UploadedFiles,
   Query,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { FilesInterceptor, AnyFilesInterceptor } from '@nestjs/platform-express';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { UploadService } from '../upload/upload.service';
 
 @Controller('employee')
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) {}
+  constructor(
+    private readonly employeeService: EmployeeService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
-  @UseInterceptors(
-    FilesInterceptor('files', 10, {
-      storage: diskStorage({
-        destination: './uploads/employees',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  create(
+  @UseInterceptors(AnyFilesInterceptor())
+  async create(
     @Body() createEmployeeDto: CreateEmployeeDto,
     @UploadedFiles() files?: Express.Multer.File[],
   ) {
     if (files && files.length > 0) {
-      // Handle file uploads
-      files.forEach((file) => {
-        const fieldName = file.fieldname;
-        if (fieldName === 'photo') {
-          createEmployeeDto.photo = `/uploads/employees/${file.filename}`;
-        } else if (fieldName === 'resume') {
-          createEmployeeDto.resume = `/uploads/employees/${file.filename}`;
-        } else if (fieldName === 'idCard') {
-          createEmployeeDto.idCard = `/uploads/employees/${file.filename}`;
-        }
-      });
+      for (const file of files) {
+        const url = await this.uploadService.uploadImage(file, 'employees');
+        if (file.fieldname === 'resume') createEmployeeDto.resume = url;
+        else if (file.fieldname === 'idCard') createEmployeeDto.idCard = url;
+        else createEmployeeDto.photo = url; // photo or any other field
+      }
     }
-
-    // Parse array fields if they come as strings
     if (typeof createEmployeeDto.certifications === 'string') {
-      createEmployeeDto.certifications = JSON.parse(createEmployeeDto.certifications as any);
+      try { createEmployeeDto.certifications = JSON.parse(createEmployeeDto.certifications as any); } catch { createEmployeeDto.certifications = []; }
     }
     if (typeof createEmployeeDto.skills === 'string') {
-      createEmployeeDto.skills = JSON.parse(createEmployeeDto.skills as any);
+      try { createEmployeeDto.skills = JSON.parse(createEmployeeDto.skills as any); } catch { createEmployeeDto.skills = []; }
     }
-
     return this.employeeService.create(createEmployeeDto);
   }
 
@@ -101,46 +82,29 @@ export class EmployeeController {
   }
 
   @Patch(':id')
-  @UseInterceptors(
-    FilesInterceptor('files', 10, {
-      storage: diskStorage({
-        destination: './uploads/employees',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  update(
+  @UseInterceptors(AnyFilesInterceptor())
+  async update(
     @Param('id') id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
     @UploadedFiles() files?: Express.Multer.File[],
   ) {
     if (files && files.length > 0) {
-      files.forEach((file) => {
-        const fieldName = file.fieldname;
-        if (fieldName === 'photo') {
-          updateEmployeeDto.photo = `/uploads/employees/${file.filename}`;
-        } else if (fieldName === 'resume') {
-          updateEmployeeDto.resume = `/uploads/employees/${file.filename}`;
-        } else if (fieldName === 'idCard') {
-          updateEmployeeDto.idCard = `/uploads/employees/${file.filename}`;
-        }
-      });
+      for (const file of files) {
+        const url = await this.uploadService.uploadImage(file, 'employees');
+        if (file.fieldname === 'resume') updateEmployeeDto.resume = url;
+        else if (file.fieldname === 'idCard') updateEmployeeDto.idCard = url;
+        else updateEmployeeDto.photo = url; // photo or any other field
+      }
     }
-
-    // Parse array fields if they come as strings
+    if (typeof updateEmployeeDto.active === 'string') {
+      updateEmployeeDto.active = (updateEmployeeDto.active as any) === 'true';
+    }
     if (typeof updateEmployeeDto.certifications === 'string') {
-      updateEmployeeDto.certifications = JSON.parse(updateEmployeeDto.certifications as any);
+      try { updateEmployeeDto.certifications = JSON.parse(updateEmployeeDto.certifications as any); } catch { updateEmployeeDto.certifications = []; }
     }
     if (typeof updateEmployeeDto.skills === 'string') {
-      updateEmployeeDto.skills = JSON.parse(updateEmployeeDto.skills as any);
+      try { updateEmployeeDto.skills = JSON.parse(updateEmployeeDto.skills as any); } catch { updateEmployeeDto.skills = []; }
     }
-
     return this.employeeService.update(id, updateEmployeeDto);
   }
 

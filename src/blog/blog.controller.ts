@@ -7,40 +7,33 @@ import {
   Delete, 
   UseInterceptors,
   UploadedFile,
-  Patch
+  Patch,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { UploadService } from '../upload/upload.service';
 
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 @Controller('blog')
 export class BlogController {
-  constructor(private readonly blogService: BlogService) {}
+  constructor(
+    private readonly blogService: BlogService,
+    private readonly uploadService: UploadService,
+  ) {}
 
   @Post()
-  @UseInterceptors(
-    FileInterceptor('coverImage', {
-      storage: diskStorage({
-        destination: './uploads/blog',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  create(
+  @UseInterceptors(FileInterceptor('coverImage'))
+  async create(
     @Body() createBlogDto: CreateBlogDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
     if (file) {
-      createBlogDto.coverImage = `/uploads/blog/${file.filename}`;
+      if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) throw new BadRequestException('Only image files are allowed');
+      if (file.size > 5 * 1024 * 1024) throw new BadRequestException('File size must be less than 5MB');
+      createBlogDto.coverImage = await this.uploadService.uploadImage(file, 'blog');
     }
     return this.blogService.create(createBlogDto);
   }
@@ -56,27 +49,16 @@ export class BlogController {
   }
 
   @Patch(':id')
-  @UseInterceptors(
-    FileInterceptor('coverImage', {
-      storage: diskStorage({
-        destination: './uploads/blog',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
-  update(
+  @UseInterceptors(FileInterceptor('coverImage'))
+  async update(
     @Param('id') id: string,
     @Body() updateBlogDto: CreateBlogDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
     if (file) {
-      updateBlogDto.coverImage = `/uploads/blog/${file.filename}`;
+      if (!ALLOWED_IMAGE_TYPES.includes(file.mimetype)) throw new BadRequestException('Only image files are allowed');
+      if (file.size > 5 * 1024 * 1024) throw new BadRequestException('File size must be less than 5MB');
+      updateBlogDto.coverImage = await this.uploadService.uploadImage(file, 'blog');
     }
     return this.blogService.update(id, updateBlogDto);
   }

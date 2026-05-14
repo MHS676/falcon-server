@@ -1,16 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MulterModule } from '@nestjs/platform-express';
 import { BlogService } from './blog.service';
 import { BlogController } from './blog.controller';
 import { PrismaModule } from '../prisma/prisma.module';
+import { UploadModule } from '../upload/upload.module';
 
 @Module({
-  imports: [
-    PrismaModule,
-    MulterModule.register({
-      dest: './uploads/blog',
-    }),
-  ],
+  imports: [PrismaModule, UploadModule],
   controllers: [BlogController],
   providers: [BlogService],
 })

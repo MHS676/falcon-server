@@ -30,6 +30,10 @@ export class CreateServiceDto {
   @IsString()
   icon?: string;
 
+  @IsOptional()
+  @IsString()
+  image?: string;
+
   @IsArray()
   @IsString({ each: true })
   @Transform(({ value }) => parseArrayField(value))

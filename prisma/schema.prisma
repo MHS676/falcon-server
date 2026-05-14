@@ -149,6 +149,7 @@ model Service {
   title       String
   description String
   icon        String?
+  image       String?
   features    String[]
   price       String?
   duration    String?
