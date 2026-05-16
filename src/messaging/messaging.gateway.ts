@@ -104,6 +104,22 @@ export class MessagingGateway implements OnGatewayConnection, OnGatewayDisconnec
             sessionId: welcomeMessage.sessionId
           });
         }, 1500); // 1.5 second delay for natural feel
+      } else {
+        // Auto-reply with emergency contact info on every subsequent message
+        setTimeout(async () => {
+          const autoReply = await this.messagingService.sendAutoReply(
+            result.message.sessionId,
+          );
+          this.server.to(`session_${result.sessionToken}`).emit('new_message', {
+            ...autoReply,
+            sessionToken: result.sessionToken
+          });
+          this.server.to('admin_room').emit('new_guest_message', {
+            ...autoReply,
+            sessionToken: result.sessionToken,
+            sessionId: autoReply.sessionId
+          });
+        }, 1500);
       }
       
       return {

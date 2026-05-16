@@ -74,13 +74,25 @@ export class MessagingService {
     const welcomeMessage = await this.prisma.message.create({
       data: {
         sessionId: sessionId,
-        content: `Hi ${guestName}! 👋 Welcome to Falcon Security. I'm here to help you with any questions about our cybersecurity services. How can I assist you today?`,
+        content: `Hi ${guestName}! 👋 Welcome to Falcon® Security Limited!\n\nOur team will respond to your inquiry shortly. How can we assist you with your security needs today?\n\n📞 For immediate / emergency assistance:\n• Head Office (Dhaka): +880 1618-325266\n• Chittagong: +880 1913-052845\n• Khulna: +880 1711-480287\n\n✉️ Email: info@falconslimited.com`,
         senderType: 'admin',
-        senderName: 'Falcon Security Team'
+        senderName: 'Support'
       }
     });
 
     return welcomeMessage;
+  }
+
+  async sendAutoReply(sessionId: string) {
+    return await this.prisma.message.create({
+      data: {
+        sessionId,
+        content:
+          `Thank you for reaching out to Falcon® Security Limited! 🛡️\n\nOur team has received your message and will respond shortly.\n\n📞 For immediate assistance or emergencies, please call us:\n• Head Office (Dhaka): +880 1618-325266\n• Chittagong: +880 1913-052845\n• Khulna: +880 1711-480287\n\n✉️ Email: info@falconslimited.com\n\n— Falcon® Support Team`,
+        senderType: 'admin',
+        senderName: 'Support'
+      }
+    });
   }
 
   async sendAdminReply(adminReplyDto: AdminReplyDto) {
